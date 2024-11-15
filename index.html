@@ -27,6 +27,51 @@
             text-align: center;
         }
 
+        /* Tab Styles */
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            color: #3498db;
+        }
+
+        .tab-button.active {
+            color: #3498db;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #3498db;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .input-section {
             margin-bottom: 30px;
         }
@@ -115,21 +160,25 @@
             font-style: italic;
         }
 
-        /* Alternate row colors */
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        /* Add some spacing between columns */
         th, td {
             padding: 12px 15px;
         }
 
-        /* Make numeric columns right-aligned */
         td:nth-child(2),
         td:nth-child(3),
         td:nth-child(4) {
             text-align: right;
+        }
+
+        /* Placeholder content styles */
+        .placeholder-content {
+            text-align: center;
+            padding: 50px;
+            color: #666;
         }
     </style>
 </head>
@@ -137,31 +186,73 @@
     <div class="container">
         <h1>Gene Network Analysis</h1>
         
-        <div class="input-section">
-            <div class="cell-type-selector">
-                <label for="cellType">Select Cell Type:</label>
-                <select id="cellType" required>
-                    <option value="NK">NK Cell</option>
-                    <option value="T">T Cell</option>
-                    <option value="B">B Cell</option>
-                </select>
-            </div>
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'tab1')">Gene Set Annotation</button>
+            <button class="tab-button" onclick="openTab(event, 'tab2')">Gene Set Generation</button>
+            <button class="tab-button" onclick="openTab(event, 'tab3')">Perturbation Prediction</button>
+        </div>
 
-            <label for="geneInput">Enter gene names (one per line) to analyze pathway relationships:</label>
-            <textarea id="geneInput" placeholder="Example:
+        <!-- Tab 1: Gene Set Annotation -->
+        <div id="tab1" class="tab-content active">
+            <div class="input-section">
+                <div class="cell-type-selector">
+                    <label for="cellType">Select Cell Type:</label>
+                    <select id="cellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                    </select>
+                </div>
+
+                <label for="geneInput">Enter gene names (one per line) to analyze pathway relationships:</label>
+                <textarea id="geneInput" placeholder="Example:
 GZMK
 PRF1
 ..."></textarea>
-            
-            <button onclick="analyzeGenes()">Analyze</button>
+                
+                <button onclick="analyzeGenes()">Analyze</button>
+            </div>
+
+            <div id="loading" class="loading">Analyzing genes, please wait...</div>
+            <div id="results"></div>
         </div>
 
-        <div id="loading" class="loading">Analyzing genes, please wait...</div>
-        <div id="results"></div>
+        <!-- Tab 2: Gene Set Generation -->
+        <div id="tab2" class="tab-content">
+            <div class="placeholder-content">
+                <h2>Gene Set Generation</h2>
+                <p>This feature will be implemented soon.</p>
+            </div>
+        </div>
+
+        <!-- Tab 3: Perturbation Prediction -->
+        <div id="tab3" class="tab-content">
+            <div class="placeholder-content">
+                <h2>Perturbation Prediction</h2>
+                <p>This feature will be implemented soon.</p>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Your existing JavaScript code remains the same
+        function openTab(evt, tabName) {
+            // Hide all tab content
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let content of tabContents) {
+                content.classList.remove("active");
+            }
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.getElementsByClassName("tab-button");
+            for (let button of tabButtons) {
+                button.classList.remove("active");
+            }
+
+            // Show the selected tab content and mark the button as active
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
         async function analyzeGenes() {
             const geneInput = document.getElementById('geneInput').value;
             const cellType = document.getElementById('cellType').value;

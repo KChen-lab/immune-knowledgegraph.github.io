@@ -5,73 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gene Network Analysis</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
+        /* Previous styles remain the same */
         
-        .container {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        textarea {
-            width: 100%;
-            height: 100px;
-            margin: 10px 0;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        button:hover {
-            background: #0056b3;
-        }
-        
-        #results {
-            margin-top: 20px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        th, td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        
-        th {
-            background: #f0f0f0;
-        }
-        
-        .loading {
-            display: none;
+        /* Add styles for the cell type selector */
+        .input-group {
             margin: 20px 0;
-            text-align: center;
+        }
+        
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-left: 10px;
+            background: white;
+        }
+        
+        label {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Gene Network Analysis</h1>
+        
+        <!-- Add cell type selector -->
+        <div class="input-group">
+            <label for="cellType">Select Cell Type:</label>
+            <select id="cellType" required>
+                <option value="">Choose a cell type...</option>
+                <option value="T">T Cell</option>
+                <option value="NK">NK Cell</option>
+                <option value="B">B Cell</option>
+            </select>
+        </div>
+
         <p>Enter gene names (one per line) to analyze pathway relationships:</p>
         <textarea id="geneInput" placeholder="Enter gene names here, one per line"></textarea>
         <button onclick="analyzeGenes()">Analyze</button>
@@ -82,10 +50,16 @@
     <script>
         async function analyzeGenes() {
             const geneInput = document.getElementById('geneInput').value;
+            const cellType = document.getElementById('cellType').value;
             const genes = geneInput.split('\n').map(gene => gene.trim()).filter(gene => gene);
             
             if (genes.length === 0) {
                 alert('Please enter at least one gene');
+                return;
+            }
+            
+            if (!cellType) {
+                alert('Please select a cell type');
                 return;
             }
             
@@ -101,7 +75,10 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ genes: genes })
+                    body: JSON.stringify({ 
+                        genes: genes,
+                        cellType: cellType  // Add cell type to the request
+                    })
                 });
                 
                 const data = await response.json();

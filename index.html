@@ -183,20 +183,35 @@
             font-size: 16px;
         }
 
-        .placeholder-content {
-            text-align: center;
-            padding: 50px;
-            color: #666;
+        .error-message {
+            color: #e74c3c;
+            padding: 10px;
+            border-left: 4px solid #e74c3c;
+            background-color: #fdf3f2;
+            margin: 10px 0;
+            white-space: pre-line;
         }
 
         #plotContainer {
             margin: 20px 0;
             text-align: center;
+            max-width: 100%;
+            overflow-x: auto;
         }
 
         #plotContainer svg {
             max-width: 100%;
             height: auto;
+        }
+
+        .debug-info {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            display: none;
         }
     </style>
 </head>

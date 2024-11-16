@@ -362,12 +362,15 @@ PRF1
                 return;
             }
             
+            // Show loading indicator
             loading.style.display = 'block';
             errorMessage.style.display = 'none';
             plotContainer.innerHTML = '';
             results.innerHTML = '';
             
             try {
+                console.log(`Analyzing perturbation for gene: ${perturbationGene} in ${cellType} cells`);
+                
                 const response = await fetch('https://chloehe1129.pythonanywhere.com/predict-perturbation', {
                     method: 'POST',
                     headers: {
@@ -379,74 +382,91 @@ PRF1
                     })
                 });
                 
+                console.log('Response status:', response.status);
+                
                 const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (response.status === 404) {
+                    // Specific handling for when gene is not found
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = `Gene "${perturbationGene}" not found in the ${cellType} cell network.`;
+                    results.innerHTML = '<p>Please check the gene name and try again.</p>';
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to analyze perturbation');
+                }
                 
                 if (data.error) {
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
-                } else {
-                    // Display the SVG plot if it exists
-                    if (data.plot) {
-                        // Remove any potential JSON formatting and extract just the SVG content
-                        const cleanSvg = data.plot.replace(/^"/, '').replace(/"$/, '').replace(/\\"/g, '"');
-                        plotContainer.innerHTML = cleanSvg;
-                    }
-                    
-                    // Display results table
-                    if (data.results && data.results.length > 0) {
-                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
-                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
-                        
-                        results.innerHTML = `
-                            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                                <div style="width: 48%;">
-                                    <h4 style="color: #2ecc71;">Activated Genes</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${activatedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div style="width: 48%;">
-                                    <h4 style="color: #e74c3c;">Inhibited Genes</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${inhibitedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        results.innerHTML = '<p>No results found for this gene.</p>';
-                    }
+                    return;
                 }
+        
+                // Check if we have results
+                if (!data.results || data.results.length === 0) {
+                    results.innerHTML = `<p>No significant perturbation effects found for gene "${perturbationGene}".</p>`;
+                    return;
+                }
+        
+                // Display the plot if it exists
+                if (data.plot) {
+                    plotContainer.innerHTML = data.plot;
+                }
+                
+                // Display results table
+                const activatedGenes = data.results.filter(r => r.effect === 'activate');
+                const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
+                
+                results.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        <div style="width: 48%;">
+                            <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Gene</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${activatedGenes.map(result => `
+                                        <tr>
+                                            <td>${result.gene}</td>
+                                            <td>${result.score.toFixed(4)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="width: 48%;">
+                            <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Gene</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${inhibitedGenes.map(result => `
+                                        <tr>
+                                            <td>${result.gene}</td>
+                                            <td>${result.score.toFixed(4)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
             } catch (error) {
                 console.error('Perturbation error:', error);
                 errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Error: Failed to connect to the server';
+                errorMessage.textContent = `Error: ${error.message}`;
             } finally {
                 loading.style.display = 'none';
             }

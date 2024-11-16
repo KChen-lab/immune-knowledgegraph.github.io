@@ -181,12 +181,24 @@
             color: #666;
         }
 
-        #plotContainer {
+        #plotContainer, #mechanismPlot {
             margin: 20px 0;
             text-align: center;
         }
 
-        #plotContainer svg {
+        #plotContainer svg, #mechanismPlot svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .mechanism-plot {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .mechanism-plot svg {
             max-width: 100%;
             height: auto;
         }
@@ -200,6 +212,7 @@
             <button onclick="switchTab('tab1')" class="tab-button active">Gene Set Annotation</button>
             <button onclick="switchTab('tab2')" class="tab-button">Gene Set Generation</button>
             <button onclick="switchTab('tab3')" class="tab-button">Perturbation Prediction</button>
+            <button onclick="switchTab('tab4')" class="tab-button">Perturbation Mechanism</button>
         </div>
 
         <!-- Tab 1: Gene Set Annotation -->
@@ -260,7 +273,41 @@ PRF1
             <div id="plotContainer"></div>
             <div id="perturbResults"></div>
         </div>
+
+        <!-- Tab 4: Perturbation Mechanism -->
+        <div id="tab4" class="tab-content">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="mechanismGenes">Enter genes of interest (one per line):</label>
+                    <textarea id="mechanismGenes" placeholder="Example:
+NMMHCIIA
+PLCG2
+IGA
+..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="mechanismPerturbGene">Perturbation Gene:</label>
+                    <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
+                </div>
+
+                <div class="form-group">
+                    <label for="mechanismCellType">Cell Type:</label>
+                    <select id="mechanismCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                    </select>
+                </div>
+
+                <button onclick="analyzeMechanism()">Analyze Mechanism</button>
+            </div>
+            <div id="mechanismLoading" class="loading-indicator">Analyzing mechanism, please wait...</div>
+            <div id="mechanismError" class="error-message"></div>
+            <div id="mechanismPlot"></div>
+        </div>
     </div>
+    
 
     <script>
         function switchTab(tabId) {
@@ -465,6 +512,75 @@ PRF1
                 
             } catch (error) {
                 console.error('Perturbation error:', error);
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = `Error: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function analyzeMechanism() {
+            const perturbGene = document.getElementById('mechanismPerturbGene').value.trim();
+            const genesInput = document.getElementById('mechanismGenes').value;
+            const cellType = document.getElementById('mechanismCellType').value;
+            const loading = document.getElementById('mechanismLoading');
+            const errorMessage = document.getElementById('mechanismError');
+            const plotContainer = document.getElementById('mechanismPlot');
+            
+            // Get genes list
+            const genes = genesInput.split('\n')
+                .map(gene => gene.trim())
+                .filter(gene => gene.length > 0);
+            
+            if (!perturbGene) {
+                alert('Please enter a perturbation gene');
+                return;
+            }
+            
+            if (genes.length === 0) {
+                alert('Please enter at least one gene of interest');
+                return;
+            }
+            
+            // Show loading
+            loading.style.display = 'block';
+            errorMessage.style.display = 'none';
+            plotContainer.innerHTML = '';
+            
+            try {
+                const response = await fetch('https://chloehe1129.pythonanywhere.com/analyze-mechanism', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        perturbationGene: perturbGene,
+                        genes: genes,
+                        cellType: cellType
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = `Error: ${data.error}`;
+                } else {
+                    // Display the mechanism plot
+                    if (data.plot) {
+                        plotContainer.innerHTML = `
+                            <div class="mechanism-plot">
+                                ${data.plot}
+                            </div>
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.error('Mechanism analysis error:', error);
                 errorMessage.style.display = 'block';
                 errorMessage.textContent = `Error: ${error.message}`;
             } finally {

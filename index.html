@@ -362,14 +362,12 @@ PRF1
                 return;
             }
             
-            // Show loading indicator
             loading.style.display = 'block';
             errorMessage.style.display = 'none';
             plotContainer.innerHTML = '';
             results.innerHTML = '';
             
             try {
-                console.log('Starting perturbation analysis...');
                 const response = await fetch('https://chloehe1129.pythonanywhere.com/predict-perturbation', {
                     method: 'POST',
                     headers: {
@@ -387,10 +385,14 @@ PRF1
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
+                    // Display the SVG plot if it exists
                     if (data.plot) {
-                        plotContainer.innerHTML = data.plot;
+                        // Remove any potential JSON formatting and extract just the SVG content
+                        const cleanSvg = data.plot.replace(/^"/, '').replace(/"$/, '').replace(/\\"/g, '"');
+                        plotContainer.innerHTML = cleanSvg;
                     }
                     
+                    // Display results table
                     if (data.results && data.results.length > 0) {
                         const activatedGenes = data.results.filter(r => r.effect === 'activate');
                         const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
@@ -446,7 +448,6 @@ PRF1
                 errorMessage.style.display = 'block';
                 errorMessage.textContent = 'Error: Failed to connect to the server';
             } finally {
-                // Hide loading indicator
                 loading.style.display = 'none';
             }
         }

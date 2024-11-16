@@ -272,77 +272,13 @@ PRF1
             evt.currentTarget.classList.add("active");
         }
 
-        async function analyzeGenes() {
-            const geneInput = document.getElementById('geneInput').value;
-            const cellType = document.getElementById('cellType').value;
-            const genes = geneInput.split('\n').map(gene => gene.trim()).filter(gene => gene);
-            
-            if (genes.length === 0) {
-                alert('Please enter at least one gene');
-                return;
-            }
-            
-            const loading = document.getElementById('loading');
-            const results = document.getElementById('results');
-            
-            loading.style.display = 'block';
-            results.innerHTML = '';
-            
-            try {
-                const response = await fetch('https://chloehe1129.pythonanywhere.com/analyze', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        genes: genes,
-                        cellType: cellType
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    results.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
-                } else {
-                    const table = `
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Pathway</th>
-                                    <th>Score</th>
-                                    <th>P-value</th>
-                                    <th>95% CI</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${data.results.map(result => `
-                                    <tr>
-                                        <td>${result.pathway}</td>
-                                        <td>${result.score.toFixed(6)}</td>
-                                        <td>${result.p_value.toFixed(4)}</td>
-                                        <td>[${result.ci_lower.toFixed(6)}, ${result.ci_upper.toFixed(6)}]</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    `;
-                    results.innerHTML = table;
-                }
-            } catch (error) {
-                results.innerHTML = `<p class="error-message">Error: Failed to connect to the server</p>`;
-            } finally {
-                loading.style.display = 'none';
-            }
-        }
-
         async function predictPerturbation() {
             const perturbationGene = document.getElementById('perturbationGene').value.trim();
             const cellType = document.getElementById('perturbCellType').value;
-            const loading = document.getElementById('perturbationLoading');
+            const loading = document.getElementById('loadingIndicator');
             const errorMessage = document.getElementById('errorMessage');
             const plotContainer = document.getElementById('plotContainer');
-            const results = document.getElementById('perturbationResults');
+            const results = document.getElementById('perturbResults');
             
             if (!perturbationGene) {
                 alert('Please enter a gene to perturb');
@@ -355,10 +291,14 @@ PRF1
             results.innerHTML = '';
             
             try {
+                console.log('Sending request to predict-perturbation...');
+                console.log('Payload:', { gene: perturbationGene, cellType });
+                
                 const response = await fetch('https://chloehe1129.pythonanywhere.com/predict-perturbation', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({ 
                         gene: perturbationGene,
@@ -366,43 +306,81 @@ PRF1
                     })
                 });
                 
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    console.error('Server error:', errorData);
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                
                 const data = await response.json();
+                console.log('Response data:', data);
                 
                 if (data.error) {
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
-                    // Display the plot
-                    plotContainer.innerHTML = data.plot;
+                    // Display the plot if it exists
+                    if (data.plot) {
+                        plotContainer.innerHTML = data.plot;
+                    }
                     
                     // Create results table
-                    const activatedGenes = data.results.filter(r => r.effect === 'activate');
-                    const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
-                    
-                    results.innerHTML = `
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Gene</th>
-                                    <th>Score</th>
-                                    <th>Effect</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${data.results.map(result => `
-                                    <tr>
-                                        <td>${result.gene}</td>
-                                        <td>${result.score.toFixed(4)}</td>
-                                        <td>${result.effect}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    `;
+                    if (data.results && data.results.length > 0) {
+                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
+                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
+                        
+                        results.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                                <div style="width: 48%;">
+                                    <h4 style="color: #2ecc71;">Activated Genes</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gene</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${activatedGenes.map(result => `
+                                                <tr>
+                                                    <td>${result.gene}</td>
+                                                    <td>${result.score.toFixed(4)}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="width: 48%;">
+                                    <h4 style="color: #e74c3c;">Inhibited Genes</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gene</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${inhibitedGenes.map(result => `
+                                                <tr>
+                                                    <td>${result.gene}</td>
+                                                    <td>${result.score.toFixed(4)}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        results.innerHTML = '<p>No results found.</p>';
+                    }
                 }
             } catch (error) {
+                console.error('Fetch error:', error);
                 errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Error: Failed to connect to the server';
+                errorMessage.textContent = `Error: Failed to connect to the server. ${error.message}`;
             } finally {
                 loading.style.display = 'none';
             }

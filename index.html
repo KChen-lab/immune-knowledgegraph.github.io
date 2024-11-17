@@ -244,10 +244,28 @@ PRF1
 
         <!-- Tab 2: Gene Set Generation -->
         <div id="tab2" class="tab-content">
-            <div class="placeholder-content">
-                <h2>Gene Set Generation</h2>
-                <p>This feature will be implemented soon.</p>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="phenotype">Enter phenotype:</label>
+                    <input type="text" id="phenotype" 
+                           placeholder="e.g., antigen-induced exhaustion" 
+                           class="form-control">
+                </div>
+        
+                <div class="form-group">
+                    <label for="genesetCellType">Cell Type:</label>
+                    <select id="genesetCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                    </select>
+                </div>
+        
+                <button onclick="generateGeneset()">Generate Gene Set</button>
             </div>
+            <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
+            <div id="genesetError" class="error-message"></div>
+            <div id="genesetResults"></div>
         </div>
 
         <!-- Tab 3: Perturbation Prediction -->
@@ -396,7 +414,100 @@ IGA
                 loading.style.display = 'none';
             }
         }
-
+        async function generateGeneset() {
+            const phenotype = document.getElementById('phenotype').value.trim();
+            const cellType = document.getElementById('genesetCellType').value;
+            const loading = document.getElementById('genesetLoading');
+            const errorMessage = document.getElementById('genesetError');
+            const results = document.getElementById('genesetResults');
+            
+            if (!phenotype) {
+                alert('Please enter a phenotype');
+                return;
+            }
+            
+            loading.style.display = 'block';
+            errorMessage.style.display = 'none';
+            results.innerHTML = '';
+            
+            try {
+                const response = await fetch('https://chloehe1129.pythonanywhere.com/generate-geneset', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        phenotype: phenotype,
+                        cellType: cellType
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = `Error: ${data.error}`;
+                } else {
+                    if (data.results && data.results.length > 0) {
+                        // Split results by effect
+                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
+                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
+                        
+                        results.innerHTML = `
+                            <div class="results-container">
+                                <div class="results-column">
+                                    <h4 style="color: #2ecc71;">Activated Genes</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gene</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${activatedGenes.map(result => `
+                                                <tr>
+                                                    <td>${result.gene}</td>
+                                                    <td>${result.score.toFixed(4)}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="results-column">
+                                    <h4 style="color: #e74c3c;">Inhibited Genes</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gene</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${inhibitedGenes.map(result => `
+                                                <tr>
+                                                    <td>${result.gene}</td>
+                                                    <td>${result.score.toFixed(4)}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        results.innerHTML = '<p>No significant genes found for this phenotype.</p>';
+                    }
+                }
+            } catch (error) {
+                console.error('Geneset generation error:', error);
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Error: Failed to connect to the server';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
         async function predictPerturbation() {
             const perturbationGene = document.getElementById('perturbationGene').value.trim();
             const cellType = document.getElementById('perturbCellType').value;

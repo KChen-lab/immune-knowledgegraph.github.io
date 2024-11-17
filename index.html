@@ -557,13 +557,22 @@ IGA
             plotContainer.innerHTML = '';
             
             try {
+                // Log the full URL being used
                 const url = 'https://chloehe1129.pythonanywhere.com/analyze-mechanism';
                 console.log('Sending request to:', url);
                 
+                // First, test if the endpoint exists
+                const testResponse = await fetch(url, {
+                    method: 'GET'
+                });
+                console.log('Test response status:', testResponse.status);
+                
+                // Then proceed with the actual request
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify(requestData)
                 });
@@ -579,14 +588,8 @@ IGA
                     throw new Error(`HTTP error! status: ${response.status}\nResponse: ${responseText}`);
                 }
                 
-                // Try to parse the response as JSON
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                } catch (e) {
-                    console.error('JSON parse error:', e);
-                    throw new Error('Invalid JSON response from server');
-                }
+                const data = JSON.parse(responseText);
+                console.log('Parsed response:', data);
                 
                 if (data.error) {
                     errorMessage.style.display = 'block';

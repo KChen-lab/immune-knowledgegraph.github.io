@@ -265,6 +265,7 @@ PRF1
             </div>
             <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
             <div id="genesetError" class="error-message"></div>
+            <div id="plotContainer"></div>
             <div id="genesetResults"></div>
         </div>
 
@@ -419,6 +420,7 @@ IGA
             const cellType = document.getElementById('genesetCellType').value;
             const loading = document.getElementById('genesetLoading');
             const errorMessage = document.getElementById('genesetError');
+            const plotContainer = document.getElementById('plotContainer');
             const results = document.getElementById('genesetResults');
             
             if (!phenotype) {
@@ -428,6 +430,7 @@ IGA
             
             loading.style.display = 'block';
             errorMessage.style.display = 'none';
+            plotContainer.innerHTML = '';
             results.innerHTML = '';
             
             try {
@@ -448,15 +451,21 @@ IGA
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
+                    // Display the plot if available
+                    if (data.plot) {
+                        const figure = JSON.parse(data.plot);
+                        Plotly.newPlot(plotContainer, figure.data, figure.layout);
+                    }
+                    
+                    // Display results table
                     if (data.results && data.results.length > 0) {
-                        // Split results by effect
                         const activatedGenes = data.results.filter(r => r.effect === 'activate');
                         const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
                         
                         results.innerHTML = `
                             <div class="results-container">
                                 <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Contributing Genes</h4>
+                                    <h4 style="color: #2ecc71;">Activated Genes</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -495,8 +504,6 @@ IGA
                                 </div>
                             </div>
                         `;
-                    } else {
-                        results.innerHTML = '<p>No significant genes found for this phenotype.</p>';
                     }
                 }
             } catch (error) {

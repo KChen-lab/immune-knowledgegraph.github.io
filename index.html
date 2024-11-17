@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Immune Network Analysis</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -527,7 +528,6 @@ IGA
             const errorMessage = document.getElementById('mechanismError');
             const plotContainer = document.getElementById('mechanismPlot');
             
-            // Get genes list
             const genes = genesInput.split('\n')
                 .map(gene => gene.trim())
                 .filter(gene => gene.length > 0);
@@ -542,7 +542,6 @@ IGA
                 return;
             }
             
-            // Show loading
             loading.style.display = 'block';
             errorMessage.style.display = 'none';
             plotContainer.innerHTML = '';
@@ -570,14 +569,9 @@ IGA
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
-                    // Display the mechanism plot
-                    if (data.plot) {
-                        plotContainer.innerHTML = `
-                            <div class="mechanism-plot">
-                                ${data.plot}
-                            </div>
-                        `;
-                    }
+                    // Parse the Plotly figure
+                    const figure = JSON.parse(data.plot);
+                    Plotly.newPlot(plotContainer, figure.data, figure.layout);
                 }
             } catch (error) {
                 console.error('Mechanism analysis error:', error);

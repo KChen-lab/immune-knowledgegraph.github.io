@@ -200,16 +200,29 @@
             background-color: #f8f9fa;
         }
 
+        #perturbPlot {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            width: 100%;
+        }
+        
         .results-container {
             display: flex;
             justify-content: space-between;
             gap: 20px;
-            margin-top: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .results-column {
             flex: 1;
             min-width: 0;
+        }
+
+        .results-column h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
         }
 
         #plotContainer, #mechanismPlot {
@@ -305,7 +318,7 @@ PRF1
                     <label for="perturbationGene">Gene:</label>
                     <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
                 </div>
-
+        
                 <div class="form-group">
                     <label for="perturbCellType">Cell Type:</label>
                     <select id="perturbCellType" required>
@@ -314,13 +327,13 @@ PRF1
                         <option value="B">B Cell</option>
                     </select>
                 </div>
-
+        
                 <button onclick="predictPerturbation()">Analyze Perturbation</button>
             </div>
             <div id="perturbLoading" class="loading-indicator">Analyzing perturbation effects, please wait...</div>
             <div id="perturbError" class="error-message"></div>
-            <div id="plotContainer"></div>
             <div id="perturbResults"></div>
+            <div id="perturbPlot"></div>
         </div>
 
         <!-- Tab 4: Perturbation Mechanism -->
@@ -523,7 +536,7 @@ IGA
             const cellType = document.getElementById('perturbCellType').value;
             const loading = document.getElementById('perturbLoading');
             const errorMessage = document.getElementById('perturbError');
-            const plotContainer = document.getElementById('plotContainer');
+            const plotContainer = document.getElementById('perturbPlot');
             const results = document.getElementById('perturbResults');
             
             if (!perturbationGene) {
@@ -554,16 +567,14 @@ IGA
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
-                    let resultsHtml = '';
-                    
                     if (data.results && data.results.length > 0) {
                         const activatedGenes = data.results.filter(r => r.effect === 'activate');
                         const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
                         
-                        resultsHtml = `
-                            <div class="results-container" style="margin-top: 0;">
+                        results.innerHTML = `
+                            <div class="results-container">
                                 <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
+                                    <h4 style="color: #2ecc71; margin-top: 0;">Activated Genes (${activatedGenes.length})</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -582,7 +593,7 @@ IGA
                                     </table>
                                 </div>
                                 <div class="results-column">
-                                    <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
+                                    <h4 style="color: #e74c3c; margin-top: 0;">Inhibited Genes (${inhibitedGenes.length})</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -607,8 +618,6 @@ IGA
                     if (data.plot) {
                         plotContainer.innerHTML = data.plot;
                     }
-                    
-                    results.innerHTML = resultsHtml;
                 }
             } catch (error) {
                 errorMessage.style.display = 'block';
@@ -617,7 +626,6 @@ IGA
                 loading.style.display = 'none';
             }
         }
-
         async function analyzeMechanism() {
             console.log('Starting mechanism analysis...');
             

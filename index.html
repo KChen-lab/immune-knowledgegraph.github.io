@@ -20,6 +20,7 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: visible
         }
 
         .header-content {
@@ -33,10 +34,13 @@
             margin-bottom: 40px;
             padding: 30px;
             background-image: url('./image/website-1.png');
-            background-size: cover;
-            background-position: center;
+            background-size: contain;
+            min-height: 400px; /* Added minimum height */
+            background-position: center center;
             background-repeat: no-repeat;
             position: relative;
+            overflow: visible
+            width: 100%
         }
         
         .header-content::before {

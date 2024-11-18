@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immune Cell Knowledge Graph</title>
+    <title>Immune Network Analysis</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body {
@@ -14,7 +14,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 30px;
             background-color: white;
@@ -22,34 +22,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-weight: 500;
-        }
-
-        <div class="header-content">
-            <h1>Immune Network Analysis</h1>
-            <p class="description">
-                An interactive tool for examination of immune cell types, offering pathway analysis, gene set discovery, and perturbation predictions in a cell type specific manner. All findings are backed by published literature with interactive visualizations.
-            </p>
-            <div class="publication">
-                <h3>Publication:</h3>
-                <p class="title">AI-derived immune cell knowledge graphs to advance immunotherapy</p>
-                <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Vakul Mohanty<sup>1</sup>, Hind Rafei<sup>2</sup>, Katayoun Rezvani<sup>2</sup>, Ken Chen<sup>1</sup>*</p>
-                <p class="affiliations">
-                    <sup>1</sup> Department of Bioinformatics and Computational Biology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
-                    <sup>2</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA
-                </p>
-            </div>
-        </div>
-
         .header-content {
             text-align: center;
             margin-bottom: 40px;
         }
-        
+
         .description {
             font-size: 16px;
             color: #666;
@@ -57,22 +34,22 @@
             margin: 20px auto;
             line-height: 1.6;
         }
-        
+
         .publication {
             margin-top: 30px;
             font-size: 14px;
             color: #333;
         }
-        
+
         .publication .title {
             font-weight: 600;
             margin: 10px 0;
         }
-        
+
         .publication .authors {
             margin: 10px 0;
         }
-        
+
         .publication .affiliations {
             font-size: 13px;
             color: #666;
@@ -80,12 +57,18 @@
             margin: 10px auto;
             line-height: 1.4;
         }
-        
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
         /* Tab Navigation Styles */
-        .tab-navigation {
+        .tabs {
             display: flex;
-            border-bottom: 2px solid #e0e0e0;
             margin-bottom: 30px;
+            border-bottom: 2px solid #ddd;
         }
 
         .tab-button {
@@ -187,17 +170,6 @@
             font-weight: 500;
         }
 
-        .loading-indicator::after {
-            content: '';
-            animation: loading-dots 1.5s infinite;
-        }
-
-        @keyframes loading-dots {
-            0% { content: '.'; }
-            33% { content: '..'; }
-            66% { content: '...'; }
-        }
-
         .error-message {
             color: #dc3545;
             padding: 10px;
@@ -228,44 +200,48 @@
             background-color: #f8f9fa;
         }
 
-        .placeholder-content {
-            text-align: center;
-            padding: 50px;
-            color: #666;
+        .results-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .results-column {
+            flex: 1;
+            min-width: 0;
         }
 
         #plotContainer, #mechanismPlot {
             margin: 20px 0;
             text-align: center;
-        }
-
-        #plotContainer svg, #mechanismPlot svg {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .mechanism-plot {
             width: 100%;
-            max-width: 1200px;
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        .mechanism-plot svg {
-            max-width: 100%;
-            height: auto;
+            height: 800px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Immune Cell Knowledge Graph</h1>
+        <div class="header-content">
+            <h1>Immune Network Analysis</h1>
+            <p class="description">
+                An interactive tool for examination of immune cell types, offering pathway analysis, gene set discovery, and perturbation predictions in a cell type specific manner. All findings are backed by published literature with interactive visualizations.
+            </p>
+            <div class="publication">
+                <h3>Publication:</h3>
+                <p class="title">AI-derived immune cell knowledge graphs to advance immunotherapy</p>
+                <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Vakul Mohanty<sup>1</sup>, Hind Rafei<sup>2</sup>, Katayoun Rezvani<sup>2</sup>, Ken Chen<sup>1</sup>*</p>
+                <p class="affiliations">
+                    <sup>1</sup> Department of Bioinformatics and Computational Biology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
+                    <sup>2</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA
+                </p>
+            </div>
+        </div>
         
-        <div class="tab-navigation">
-            <button onclick="switchTab('tab1')" class="tab-button active">Gene Set Annotation</button>
-            <button onclick="switchTab('tab2')" class="tab-button">Gene Set Generation</button>
-            <button onclick="switchTab('tab3')" class="tab-button">Perturbation Prediction</button>
-            <button onclick="switchTab('tab4')" class="tab-button">Perturbation Mechanism</button>
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('tab1')">Gene Set Annotation</button>
+            <button class="tab-button" onclick="switchTab('tab2')">Gene Set Generation</button>
+            <button class="tab-button" onclick="switchTab('tab3')">Perturbation Prediction</button>
+            <button class="tab-button" onclick="switchTab('tab4')">Perturbation Mechanism</button>
         </div>
 
         <!-- Tab 1: Gene Set Annotation -->

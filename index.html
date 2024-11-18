@@ -212,7 +212,7 @@
         }
 
         #plotContainer, #mechanismPlot {
-            margin: 20px 0;
+            margin: 0;
             text-align: center;
             width: 100%;
             height: 800px;
@@ -487,51 +487,25 @@ IGA
                     
                     // Display results table
                     if (data.results && data.results.length > 0) {
-                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
-                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
-                        
-                        results.innerHTML = `
-                            <div class="results-container">
-                                <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Contributing Genes</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${activatedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="results-column">
-                                    <h4 style="color: #e74c3c;">Inhibited Genes</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${inhibitedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                        const results = `
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Gene</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.results.map(result => `
+                                        <tr>
+                                            <td>${result.gene}</td>
+                                            <td>${result.score.toFixed(4)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
                         `;
+                        genesetResults.innerHTML = results;
                     }
                 }
             } catch (error) {

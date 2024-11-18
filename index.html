@@ -567,6 +567,12 @@ IGA
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
+                    // First set the plot data
+                    if (data.plot) {
+                        plotContainer.innerHTML = data.plot;
+                    }
+                    
+                    // Then set the table results
                     if (data.results && data.results.length > 0) {
                         const activatedGenes = data.results.filter(r => r.effect === 'activate');
                         const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
@@ -575,7 +581,7 @@ IGA
                             <div class="results-container">
                                 <div class="results-column">
                                     <h4 style="color: #2ecc71; margin-top: 0;">Activated Genes (${activatedGenes.length})</h4>
-                                    <table>
+                                    <table style="margin-top: 0;">
                                         <thead>
                                             <tr>
                                                 <th>Gene</th>
@@ -594,7 +600,7 @@ IGA
                                 </div>
                                 <div class="results-column">
                                     <h4 style="color: #e74c3c; margin-top: 0;">Inhibited Genes (${inhibitedGenes.length})</h4>
-                                    <table>
+                                    <table style="margin-top: 0;">
                                         <thead>
                                             <tr>
                                                 <th>Gene</th>
@@ -614,10 +620,6 @@ IGA
                             </div>
                         `;
                     }
-                    
-                    if (data.plot) {
-                        plotContainer.innerHTML = data.plot;
-                    }
                 }
             } catch (error) {
                 errorMessage.style.display = 'block';
@@ -626,6 +628,7 @@ IGA
                 loading.style.display = 'none';
             }
         }
+        
         async function analyzeMechanism() {
             console.log('Starting mechanism analysis...');
             

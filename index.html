@@ -198,6 +198,51 @@
             border-left: 4px solid #dc3545;
             display: none;
         }
+
+        /* Results styling */
+        .results-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .results-column {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .results-column h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        #plotContainer, #perturbPlot, #mechanismPlot {
+            margin: 20px 0;
+            text-align: center;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -239,45 +284,49 @@
 
         <!-- Gene Set Annotation Tab -->
         <div id="tab1" class="tab-content">
-            <div class="form-group">
-                <label for="geneInput">Enter gene names (one per line) to analyze pathway relationships:</label>
-                <textarea id="geneInput" placeholder="Example:
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="geneInput">Enter gene names (one per line) to analyze pathway relationships:</label>
+                    <textarea id="geneInput" placeholder="Example:
 GZMK
 PRF1
 ..."></textarea>
-            </div>
+                </div>
 
-            <div class="form-group">
-                <label for="cellType">Select Cell Type:</label>
-                <select id="cellType" required>
-                    <option value="NK">NK Cell</option>
-                    <option value="T">T Cell</option>
-                    <option value="B">B Cell</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="cellType">Select Cell Type:</label>
+                    <select id="cellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                    </select>
+                </div>
 
-            <button onclick="analyzeGenes()">Analyze</button>
+                <button onclick="analyzeGenes()">Analyze</button>
+            </div>
             <div id="geneSetLoading" class="loading-indicator">Analyzing genes, please wait...</div>
             <div id="geneSetResults"></div>
         </div>
 
         <!-- Gene Set Generation Tab -->
         <div id="tab2" class="tab-content">
-            <div class="form-group">
-                <label for="phenotype">Enter phenotype:</label>
-                <input type="text" id="phenotype" placeholder="e.g., antigen-induced exhaustion">
-            </div>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="phenotype">Enter phenotype:</label>
+                    <input type="text" id="phenotype" placeholder="e.g., antigen-induced exhaustion">
+                </div>
 
-            <div class="form-group">
-                <label for="genesetCellType">Cell Type:</label>
-                <select id="genesetCellType" required>
-                    <option value="NK">NK Cell</option>
-                    <option value="T">T Cell</option>
-                    <option value="B">B Cell</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="genesetCellType">Cell Type:</label>
+                    <select id="genesetCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                    </select>
+                </div>
 
-            <button onclick="generateGeneset()">Generate Gene Set</button>
+                <button onclick="generateGeneset()">Generate Gene Set</button>
+            </div>
             <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
             <div id="genesetError" class="error-message"></div>
             <div id="plotContainer"></div>
@@ -286,53 +335,57 @@ PRF1
 
         <!-- Perturbation Prediction Tab -->
         <div id="tab3" class="tab-content">
-            <div class="form-group">
-                <label for="perturbationGene">Gene:</label>
-                <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
-            </div>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="perturbationGene">Gene:</label>
+                    <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
+                </div>
 
-            <div class="form-group">
-                <label for="perturbCellType">Cell Type:</label>
-                <select id="perturbCellType" required>
-                    <option value="NK">NK Cell</option>
-                    <option value="T">T Cell</option>
-                    <option value="B">B Cell</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="perturbCellType">Cell Type:</label>
+                    <select id="perturbCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                    </select>
+                </div>
 
-            <button onclick="predictPerturbation()">Analyze Perturbation</button>
+                <button onclick="predictPerturbation()">Analyze Perturbation</button>
+            </div>
             <div id="perturbLoading" class="loading-indicator">Analyzing perturbation effects, please wait...</div>
             <div id="perturbError" class="error-message"></div>
+            <div id="plotContainer"></div>
             <div id="perturbResults"></div>
-            <div id="perturbPlot"></div>
         </div>
 
         <!-- Perturbation Mechanism Tab -->
         <div id="tab4" class="tab-content">
-            <div class="form-group">
-                <label for="mechanismGenes">Enter genes of interest (one per line):</label>
-                <textarea id="mechanismGenes" placeholder="Example:
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="mechanismGenes">Enter genes of interest (one per line):</label>
+                    <textarea id="mechanismGenes" placeholder="Example:
 NMMHCIIA
 PLCG2
 IGA
 ..."></textarea>
-            </div>
+                </div>
 
-            <div class="form-group">
-                <label for="mechanismPerturbGene">Perturbation Gene:</label>
-                <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
-            </div>
+                <div class="form-group">
+                    <label for="mechanismPerturbGene">Perturbation Gene:</label>
+                    <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
+                </div>
 
-            <div class="form-group">
-                <label for="mechanismCellType">Cell Type:</label>
-                <select id="mechanismCellType" required>
-                    <option value="NK">NK Cell</option>
-                    <option value="T">T Cell</option>
-                    <option value="B">B Cell</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="mechanismCellType">Cell Type:</label>
+                    <select id="mechanismCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                    </select>
+                </div>
 
-            <button onclick="analyzeMechanism()">Analyze Mechanism</button>
+                <button onclick="analyzeMechanism()">Analyze Mechanism</button>
+            </div>
             <div id="mechanismLoading" class="loading-indicator">Analyzing mechanism, please wait...</div>
             <div id="mechanismError" class="error-message"></div>
             <div id="mechanismPlot"></div>
@@ -425,6 +478,7 @@ IGA
                 loading.style.display = 'none';
             }
         }
+        
         async function generateGeneset() {
             const phenotype = document.getElementById('phenotype').value.trim();
             const cellType = document.getElementById('genesetCellType').value;
@@ -467,27 +521,53 @@ IGA
                         Plotly.newPlot(plotContainer, figure.data, figure.layout);
                     }
                     
-                    // Display results table
+                    // Display results table with side-by-side layout
                     if (data.results && data.results.length > 0) {
-                        const results = `
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Gene</th>
-                                        <th>Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${data.results.map(result => `
-                                        <tr>
-                                            <td>${result.gene}</td>
-                                            <td>${result.score.toFixed(4)}</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
+                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
+                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
+                        
+                        results.innerHTML = `
+                            <div class="results-container">
+                                <div class="results-column">
+                                    <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gene</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${activatedGenes.map(result => `
+                                                <tr>
+                                                    <td>${result.gene}</td>
+                                                    <td>${result.score.toFixed(4)}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="results-column">
+                                    <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gene</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${inhibitedGenes.map(result => `
+                                                <tr>
+                                                    <td>${result.gene}</td>
+                                                    <td>${result.score.toFixed(4)}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         `;
-                        genesetResults.innerHTML = results;
                     }
                 }
             } catch (error) {
@@ -504,7 +584,7 @@ IGA
             const cellType = document.getElementById('perturbCellType').value;
             const loading = document.getElementById('perturbLoading');
             const errorMessage = document.getElementById('perturbError');
-            const plotContainer = document.getElementById('perturbPlot');
+            const plotContainer = document.getElementById('plotContainer');
             const results = document.getElementById('perturbResults');
             
             if (!perturbationGene) {
@@ -535,12 +615,12 @@ IGA
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
-                    // First set the plot data
+                    // Display the plot if available
                     if (data.plot) {
                         plotContainer.innerHTML = data.plot;
                     }
                     
-                    // Then set the table results
+                    // Display results in side-by-side layout
                     if (data.results && data.results.length > 0) {
                         const activatedGenes = data.results.filter(r => r.effect === 'activate');
                         const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
@@ -548,8 +628,8 @@ IGA
                         results.innerHTML = `
                             <div class="results-container">
                                 <div class="results-column">
-                                    <h4 style="color: #2ecc71; margin-top: 0;">Activated Genes (${activatedGenes.length})</h4>
-                                    <table style="margin-top: 0;">
+                                    <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
+                                    <table>
                                         <thead>
                                             <tr>
                                                 <th>Gene</th>
@@ -567,8 +647,8 @@ IGA
                                     </table>
                                 </div>
                                 <div class="results-column">
-                                    <h4 style="color: #e74c3c; margin-top: 0;">Inhibited Genes (${inhibitedGenes.length})</h4>
-                                    <table style="margin-top: 0;">
+                                    <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
+                                    <table>
                                         <thead>
                                             <tr>
                                                 <th>Gene</th>
@@ -590,8 +670,9 @@ IGA
                     }
                 }
             } catch (error) {
+                console.error('Perturbation error:', error);
                 errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Error: Failed to connect to the server';
+                errorMessage.textContent = `Error: ${error.message}`;
             } finally {
                 loading.style.display = 'none';
             }

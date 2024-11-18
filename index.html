@@ -50,7 +50,9 @@
             z-index: 0;
         }
         
-        .header-content h1,
+        .header-content h1 {
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
         .header-content .description,
         .header-content .publication {
             position: relative;
@@ -58,14 +60,14 @@
         }
         
         .header-content .description {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.6);
             padding: 15px;
             border-radius: 8px;
             margin: 20px auto;
         }
         
         .header-content .publication {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.6);
             padding: 15px;
             border-radius: 4px;
             margin-top: 20px;
@@ -77,6 +79,10 @@
             max-width: 800px;
             margin: 20px auto;
             line-height: 1.6;
+        }
+
+        .description, .publication {
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
         }
 
         .publication {

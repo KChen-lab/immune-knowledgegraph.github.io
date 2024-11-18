@@ -16,120 +16,17 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 30px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            overflow: visible
         }
 
-        .header-content {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header-content {
-            position: relative;
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background-image: url('./image/website-1.png');
-            background-size: contain;
-            min-height: 400px; /* Added minimum height */
-            background-position: center center;
-            background-repeat: no-repeat;
-            position: relative;
-            overflow: visible
-            width: 100%
-        }
-        
-        .header-content::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(255, 255, 255, 0.6);  /* White overlay */
-            z-index: 0;
-        }
-        
-        .header-content h1 {
-            position: relative;
-            z-index: 1;
-            color: #000000;  /* Change from #333 to black */
-            font-weight: bold;  /* Add bold */
-            margin-bottom: 10px;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            font-size: 36px;  /* Optional: make it larger */
-        }
-        .header-content .description,
-        .header-content .publication {
-            position: relative;
-            z-index: 1;  /* Place text above the overlay */
-        }
-        
-        .header-content .description {
-            background-color: rgba(255, 255, 255, 0.6);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px auto;
-        }
-        
-        .header-content .publication {
-            background-color: rgba(255, 255, 255, 0.6);
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-        }
-
-        .description {
-            font-size: 16px;
-            color: #666;
-            max-width: 800px;
-            margin: 20px auto;
-            line-height: 1.6;
-        }
-
-        .description, .publication {
-            text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
-        }
-
-        .publication {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .publication .title {
-            font-weight: 600;
-            margin: 10px 0;
-        }
-
-        .publication .authors {
-            margin: 10px 0;
-        }
-
-        .publication .affiliations {
-            font-size: 13px;
-            color: #666;
-            max-width: 700px;
-            margin: 10px auto;
-            line-height: 1.4;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        /* Tab Navigation Styles */
+        /* Tabs moved to top */
         .tabs {
             display: flex;
-            margin-bottom: 30px;
             border-bottom: 2px solid #ddd;
+            background-color: #f8f9fa;
+            border-radius: 8px 8px 0 0;
         }
 
         .tab-button {
@@ -163,14 +60,85 @@
             background-color: #007bff;
         }
 
+        /* Home tab content */
+        .home-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .home-title {
+            color: #000000;
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-size: 36px;
+        }
+
+        .home-description {
+            font-size: 16px;
+            color: #666;
+            max-width: 800px;
+            margin: 20px auto 40px;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .home-image {
+            margin: 40px auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .home-image img {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+        }
+
+        .publication {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .publication h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .publication .title {
+            font-weight: 600;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .publication .authors {
+            margin: 10px 0;
+            color: #444;
+        }
+
+        .publication .affiliations {
+            font-size: 13px;
+            color: #666;
+            max-width: 700px;
+            margin: 10px auto;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        /* Other tab content styles */
         .tab-content {
             display: none;
+            padding: 30px;
         }
 
         .tab-content.active {
             display: block;
         }
 
+        /* Form styles */
         .form-group {
             margin-bottom: 20px;
         }
@@ -182,7 +150,7 @@
             color: #333;
         }
 
-        input[type="text"], select {
+        input[type="text"], select, textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -190,17 +158,8 @@
             font-size: 16px;
         }
 
-        select {
-            background-color: white;
-        }
-
         textarea {
-            width: 100%;
             height: 150px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
             font-family: monospace;
             resize: vertical;
         }
@@ -239,198 +198,146 @@
             border-left: 4px solid #dc3545;
             display: none;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
-
-        tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        #perturbPlot {
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .results-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .results-column {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .results-column h4 {
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        #plotContainer, #mechanismPlot {
-            margin: 0;
-            text-align: center;
-            width: 100%;
-            height: 800px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header-content">
-            <h1>Immune Cell Knowledge Graph</h1>
-            <p class="description">
-                An interactive tool for examination of immune cell types, offering pathway analysis, gene set discovery, and perturbation predictions in a cell type specific manner. All findings are backed by published literature with interactive visualizations.
-            </p>
-            <div class="publication">
-                <h3>Publication:</h3>
-                <p class="title">AI-derived immune cell knowledge graphs to advance immunotherapy</p>
-                <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Vakul Mohanty<sup>1</sup>, Hind Rafei<sup>2</sup>, Katayoun Rezvani<sup>2</sup>, Ken Chen<sup>1</sup>*</p>
-                <p class="affiliations">
-                    <sup>1</sup> Department of Bioinformatics and Computational Biology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
-                    <sup>2</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA
-                </p>
-            </div>
-        </div>
-        
         <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('tab1')">Gene Set Annotation</button>
+            <button class="tab-button active" onclick="switchTab('home')">Home</button>
+            <button class="tab-button" onclick="switchTab('tab1')">Gene Set Annotation</button>
             <button class="tab-button" onclick="switchTab('tab2')">Gene Set Generation</button>
             <button class="tab-button" onclick="switchTab('tab3')">Perturbation Prediction</button>
             <button class="tab-button" onclick="switchTab('tab4')">Perturbation Mechanism</button>
         </div>
 
-        <!-- Tab 1: Gene Set Annotation -->
-        <div id="tab1" class="tab-content active">
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="geneInput">Enter gene names (one per line) to analyze pathway relationships (this might take a while as we are doing 1000 permutations in the backend, thank you for your patience :)):</label>
-                    <textarea id="geneInput" placeholder="Example:
+        <!-- Home Tab -->
+        <div id="home" class="tab-content active">
+            <div class="home-content">
+                <h1 class="home-title">Immune Cell Knowledge Graph</h1>
+                
+                <p class="home-description">
+                    An interactive tool for examination of immune cell types, offering pathway analysis, gene set discovery, and 
+                    perturbation predictions in a cell type specific manner. All findings are backed by published literature with 
+                    interactive visualizations.
+                </p>
+
+                <div class="home-image">
+                    <img src="./image/website-1.png" alt="Immune Cell Knowledge Graph">
+                </div>
+
+                <div class="publication">
+                    <h3>Publication:</h3>
+                    <p class="title">AI-derived immune cell knowledge graphs to advance immunotherapy</p>
+                    <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Vakul Mohanty<sup>1</sup>, Hind Rafei<sup>2</sup>, Katayoun Rezvani<sup>2</sup>, Ken Chen<sup>1</sup>*</p>
+                    <p class="affiliations">
+                        <sup>1</sup> Department of Bioinformatics and Computational Biology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
+                        <sup>2</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gene Set Annotation Tab -->
+        <div id="tab1" class="tab-content">
+            <div class="form-group">
+                <label for="geneInput">Enter gene names (one per line) to analyze pathway relationships:</label>
+                <textarea id="geneInput" placeholder="Example:
 GZMK
 PRF1
 ..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="cellType">Select Cell Type:</label>
-                    <select id="cellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                    </select>
-                </div>
-
-                <button onclick="analyzeGenes()">Analyze</button>
             </div>
+
+            <div class="form-group">
+                <label for="cellType">Select Cell Type:</label>
+                <select id="cellType" required>
+                    <option value="NK">NK Cell</option>
+                    <option value="T">T Cell</option>
+                    <option value="B">B Cell</option>
+                </select>
+            </div>
+
+            <button onclick="analyzeGenes()">Analyze</button>
             <div id="geneSetLoading" class="loading-indicator">Analyzing genes, please wait...</div>
             <div id="geneSetResults"></div>
         </div>
 
-        <!-- Tab 2: Gene Set Generation -->
+        <!-- Gene Set Generation Tab -->
         <div id="tab2" class="tab-content">
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="phenotype">Enter phenotype:</label>
-                    <input type="text" id="phenotype" 
-                           placeholder="e.g., antigen-induced exhaustion" 
-                           class="form-control">
-                </div>
-        
-                <div class="form-group">
-                    <label for="genesetCellType">Cell Type:</label>
-                    <select id="genesetCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                    </select>
-                </div>
-        
-                <button onclick="generateGeneset()">Generate Gene Set</button>
+            <div class="form-group">
+                <label for="phenotype">Enter phenotype:</label>
+                <input type="text" id="phenotype" placeholder="e.g., antigen-induced exhaustion">
             </div>
+
+            <div class="form-group">
+                <label for="genesetCellType">Cell Type:</label>
+                <select id="genesetCellType" required>
+                    <option value="NK">NK Cell</option>
+                    <option value="T">T Cell</option>
+                    <option value="B">B Cell</option>
+                </select>
+            </div>
+
+            <button onclick="generateGeneset()">Generate Gene Set</button>
             <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
             <div id="genesetError" class="error-message"></div>
             <div id="plotContainer"></div>
             <div id="genesetResults"></div>
         </div>
 
-        <!-- Tab 3: Perturbation Prediction -->
+        <!-- Perturbation Prediction Tab -->
         <div id="tab3" class="tab-content">
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="perturbationGene">Gene:</label>
-                    <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
-                </div>
-        
-                <div class="form-group">
-                    <label for="perturbCellType">Cell Type:</label>
-                    <select id="perturbCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                    </select>
-                </div>
-        
-                <button onclick="predictPerturbation()">Analyze Perturbation</button>
+            <div class="form-group">
+                <label for="perturbationGene">Gene:</label>
+                <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
             </div>
+
+            <div class="form-group">
+                <label for="perturbCellType">Cell Type:</label>
+                <select id="perturbCellType" required>
+                    <option value="NK">NK Cell</option>
+                    <option value="T">T Cell</option>
+                    <option value="B">B Cell</option>
+                </select>
+            </div>
+
+            <button onclick="predictPerturbation()">Analyze Perturbation</button>
             <div id="perturbLoading" class="loading-indicator">Analyzing perturbation effects, please wait...</div>
             <div id="perturbError" class="error-message"></div>
             <div id="perturbResults"></div>
             <div id="perturbPlot"></div>
         </div>
 
-        <!-- Tab 4: Perturbation Mechanism -->
+        <!-- Perturbation Mechanism Tab -->
         <div id="tab4" class="tab-content">
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="mechanismGenes">Enter genes of interest (one per line):</label>
-                    <textarea id="mechanismGenes" placeholder="Example:
+            <div class="form-group">
+                <label for="mechanismGenes">Enter genes of interest (one per line):</label>
+                <textarea id="mechanismGenes" placeholder="Example:
 NMMHCIIA
 PLCG2
 IGA
 ..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="mechanismPerturbGene">Perturbation Gene:</label>
-                    <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
-                </div>
-
-                <div class="form-group">
-                    <label for="mechanismCellType">Cell Type:</label>
-                    <select id="mechanismCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                    </select>
-                </div>
-
-                <button onclick="analyzeMechanism()">Analyze Mechanism</button>
             </div>
+
+            <div class="form-group">
+                <label for="mechanismPerturbGene">Perturbation Gene:</label>
+                <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
+            </div>
+
+            <div class="form-group">
+                <label for="mechanismCellType">Cell Type:</label>
+                <select id="mechanismCellType" required>
+                    <option value="NK">NK Cell</option>
+                    <option value="T">T Cell</option>
+                    <option value="B">B Cell</option>
+                </select>
+            </div>
+
+            <button onclick="analyzeMechanism()">Analyze Mechanism</button>
             <div id="mechanismLoading" class="loading-indicator">Analyzing mechanism, please wait...</div>
             <div id="mechanismError" class="error-message"></div>
             <div id="mechanismPlot"></div>
         </div>
     </div>
-    
 
     <script>
         function switchTab(tabId) {

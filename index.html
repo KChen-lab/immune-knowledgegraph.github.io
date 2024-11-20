@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Immune Cell Knowledge Graph</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="LoadingProgress.jsx" type="module"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -339,10 +334,8 @@ PRF1
 
                 <button onclick="analyzeGenes()">Analyze</button>
             </div>
-            <div id="geneSetLoading"></div>
+            <div id="geneSetLoading" class="loading-indicator">Analyzing genes, please wait...</div>
             <div id="geneSetResults"></div>
-            <div id="genesetProgressBar"></div>
-            <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
         </div>
 
         <!-- Gene Set Generation Tab -->
@@ -498,132 +491,71 @@ IGA
             event.currentTarget.classList.add('active');
         }
 
-        async function generateGeneset() {
-            const phenotype = document.getElementById('phenotype').value.trim();
-            const cellType = document.getElementById('genesetCellType').value;
-            const loading = document.getElementById('genesetProgressBar');
-            const errorMessage = document.getElementById('genesetError');
-            const plotContainer = document.getElementById('plotContainer');
-            const results = document.getElementById('genesetResults');
-            const root = ReactDOM.createRoot(loading);
+        async function analyzeGenes() {
+            const geneInput = document.getElementById('geneInput').value;
+            const cellType = document.getElementById('cellType').value;
+            const genes = geneInput.split('\n').map(gene => gene.trim()).filter(gene => gene);
             
-            if (!phenotype) {
-                alert('Please enter a phenotype');
+            if (genes.length === 0) {
+                alert('Please enter at least one gene');
                 return;
             }
             
-            errorMessage.style.display = 'none';
-            plotContainer.innerHTML = '';
+            const loading = document.getElementById('geneSetLoading');
+            const results = document.getElementById('geneSetResults');
+            
+            // Show loading indicator
+            loading.style.display = 'block';
             results.innerHTML = '';
             
             try {
-                root.render(React.createElement(LoadingProgress, { 
-                    showProgress: true, 
-                    progress: 0 
-                }));
-        
-                const response = await fetch('https://chloehe1129.pythonanywhere.com/generate-geneset', {
+                console.log('Analyzing genes...');
+                const response = await fetch('https://chloehe1129.pythonanywhere.com/analyze', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'text/event-stream',
-                        'EventStream': 'true'
                     },
                     body: JSON.stringify({ 
-                        phenotype: phenotype,
+                        genes: genes,
                         cellType: cellType
                     })
                 });
-        
-                const reader = response.body.getReader();
-                let finalData = null;
                 
-                while (true) {
-                    const {value, done} = await reader.read();
-                    if (done) break;
-                    
-                    const text = new TextDecoder().decode(value);
-                    try {
-                        const data = JSON.parse(text);
-                        
-                        if (data.progress) {
-                            root.render(React.createElement(LoadingProgress, { 
-                                showProgress: true, 
-                                progress: data.progress 
-                            }));
-                        }
-                        
-                        if (data.results) {
-                            finalData = data;
-                        }
-                    } catch (e) {
-                        console.error('Error parsing stream chunk:', e);
-                    }
-                }
+                const data = await response.json();
                 
-                if (finalData?.error) {
-                    errorMessage.style.display = 'block';
-                    errorMessage.textContent = `Error: ${finalData.error}`;
-                } else if (finalData?.results) {
-                    // Display the plot if available
-                    if (finalData.plot) {
-                        const figure = JSON.parse(finalData.plot);
-                        Plotly.newPlot(plotContainer, figure.data, figure.layout);
-                    }
-                    
-                    // Display results table with side-by-side layout
-                    const activatedGenes = finalData.results.filter(r => r.effect === 'activate');
-                    const inhibitedGenes = finalData.results.filter(r => r.effect === 'inhibit');
-                    
-                    results.innerHTML = `
-                        <div class="results-container">
-                            <div class="results-column">
-                                <h4 style="color: #2ecc71;">Contributing Genes (${activatedGenes.length})</h4>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Gene</th>
-                                            <th>Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${activatedGenes.map(result => `
-                                            <tr>
-                                                <td>${result.gene}</td>
-                                                <td>${result.score.toFixed(4)}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="results-column">
-                                <h4 style="color: #e74c3c;">Other Genes (${inhibitedGenes.length})</h4>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Gene</th>
-                                            <th>Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${inhibitedGenes.map(result => `
-                                            <tr>
-                                                <td>${result.gene}</td>
-                                                <td>${result.score.toFixed(4)}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                if (data.error) {
+                    results.innerHTML = `<div class="error-message">Error: ${data.error}</div>`;
+                } else {
+                    const table = `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Pathway</th>
+                                    <th>Score</th>
+                                    <th>P-value</th>
+                                    <th>95% CI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.results.map(result => `
+                                    <tr>
+                                        <td>${result.pathway}</td>
+                                        <td>${result.score.toFixed(6)}</td>
+                                        <td>${result.p_value.toFixed(4)}</td>
+                                        <td>[${result.ci_lower.toFixed(6)}, ${result.ci_upper.toFixed(6)}]</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     `;
+                    results.innerHTML = table;
                 }
             } catch (error) {
-                console.error('Geneset generation error:', error);
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Error: Failed to connect to the server';
+                results.innerHTML = `<div class="error-message">Error: Failed to connect to the server</div>`;
+                console.error('Analysis error:', error);
             } finally {
-                root.render(React.createElement(LoadingProgress, { showProgress: false }));
+                // Hide loading indicator
+                loading.style.display = 'none';
             }
         }
         

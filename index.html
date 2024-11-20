@@ -273,6 +273,55 @@
             text-align: center;
             width: 100%;
         }
+        /* Add new progress bar styles */
+        .progress-container {
+            display: none;
+            margin: 20px 0;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar-outer {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-inner {
+            width: 0%;
+            height: 100%;
+            background-color: #007bff;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 0 10px;
+        }
+
+        .progress-step {
+            font-size: 12px;
+            color: #999;
+            position: relative;
+        }
+
+        .progress-step.completed {
+            color: #007bff;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -332,6 +381,19 @@ PRF1
                     </select>
                 </div>
 
+                <div id="progressContainer" class="progress-container">
+                    <div class="progress-bar-outer">
+                        <div id="progressBar" class="progress-bar-inner"></div>
+                    </div>
+                    <div id="progressText" class="progress-text">Initializing...</div>
+                    <div class="progress-steps">
+                        <div class="progress-step" data-step="validation">Validation</div>
+                        <div class="progress-step" data-step="processing">Processing</div>
+                        <div class="progress-step" data-step="analysis">Analysis</div>
+                        <div class="progress-step" data-step="completion">Completion</div>
+                    </div>
+                </div>
+                
                 <button onclick="analyzeGenes()">Analyze</button>
             </div>
             <div id="geneSetLoading" class="loading-indicator">Analyzing genes, please wait...</div>
@@ -503,12 +565,27 @@ IGA
             
             const loading = document.getElementById('geneSetLoading');
             const results = document.getElementById('geneSetResults');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
             
-            // Show loading indicator
+            // Reset and show progress elements
             loading.style.display = 'block';
+            progressContainer.style.display = 'block';
             results.innerHTML = '';
+            progressBar.style.width = '0%';
+            
+            // Update progress steps
+            updateProgressStep('validation');
             
             try {
+                // Simulate validation progress
+                await updateProgress(20, 'Validating input genes...');
+                
+                // Update to processing step
+                updateProgressStep('processing');
+                await updateProgress(40, 'Processing gene relationships...');
+                
                 console.log('Analyzing genes...');
                 const response = await fetch('https://chloehe1129.pythonanywhere.com/analyze', {
                     method: 'POST',
@@ -521,7 +598,15 @@ IGA
                     })
                 });
                 
+                // Update to analysis step
+                updateProgressStep('analysis');
+                await updateProgress(70, 'Analyzing pathway connections...');
+                
                 const data = await response.json();
+                
+                // Update to completion step
+                updateProgressStep('completion');
+                await updateProgress(100, 'Analysis complete!');
                 
                 if (data.error) {
                     results.innerHTML = `<div class="error-message">Error: ${data.error}</div>`;
@@ -554,9 +639,34 @@ IGA
                 results.innerHTML = `<div class="error-message">Error: Failed to connect to the server</div>`;
                 console.error('Analysis error:', error);
             } finally {
-                // Hide loading indicator
-                loading.style.display = 'none';
+                // Hide loading indicator after a brief delay
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    progressContainer.style.display = 'none';
+                }, 1000);
             }
+        }
+
+        function updateProgressStep(step) {
+            document.querySelectorAll('.progress-step').forEach(el => {
+                el.classList.remove('completed');
+                if (el.dataset.step === step) {
+                    el.classList.add('completed');
+                }
+            });
+        }
+    
+        function updateProgress(percentage, text) {
+            return new Promise(resolve => {
+                const progressBar = document.getElementById('progressBar');
+                const progressText = document.getElementById('progressText');
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = text;
+                
+                // Add a small delay to make the progress visible
+                setTimeout(resolve, 500);
+            });
         }
         
         async function generateGeneset() {

@@ -1,8 +1,6 @@
-# immune-knowledgegraph.github.io
-
 # Immune Knowledge Graph Analysis
 
-A web application for analyzing immune system pathway relationships using network analysis.
+A web application for analyzing immune related genes and pathways relationships with literature-based knowledge graphs.
 
 ## Project Structure
 ```
@@ -13,7 +11,7 @@ immune-knowledgegraph.github.io/
 ├── frontend/         # Frontend files
 │   └── index.html    # Main webpage
 └── data/            # Network data
-    └── network_data.csv
+    └── ...network_data.csv
 ```
 
 ## Setup

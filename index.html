@@ -21,6 +21,42 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .header-panel {
+            background-color: #f8f9fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        .header-title {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .header-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 1000px;
+        }
+        
+        .tab-description {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
         /* Tabs moved to top */
         .tabs {
             display: flex;
@@ -326,6 +362,17 @@
 </head>
 <body>
     <div class="container">
+        <div class="header-panel">
+            <div class="header-content">
+                <h1 class="header-title">Immune Cell Knowledge Graph (ICKG)</h1>
+                <p class="header-description">
+                    Search and analyze immune cell types across different contexts. ICKG supports exploring pathway relationships, 
+                    gene set generation, perturbation predictions, and mechanism analysis. We recommend users to choose specific 
+                    cell types for the most relevant results.
+                </p>
+            </div>
+        </div>
+        
         <div class="tabs">
             <button class="tab-button active" onclick="switchTab('home')">Home</button>
             <button class="tab-button" onclick="switchTab('tab1')">Gene Set Annotation</button>

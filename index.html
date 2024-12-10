@@ -68,6 +68,22 @@
             height: 2px;
             background-color: #007bff;
         }
+        /* PMID link styles */
+        .plotly-tooltip-pmid {
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .plotly-tooltip a {
+            color: #007bff !important;
+            text-decoration: underline !important;
+        }
+
+        .plotly-tooltip a:hover {
+            color: #0056b3 !important;
+            text-decoration: none !important;
+        }
 
         /* Home tab content */
         .home-content {
@@ -523,6 +539,12 @@ IGA
     </div>
 
     <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.plotly-tooltip a[href*="pubmed.ncbi.nlm.nih.gov"]')) {
+                e.preventDefault();
+                window.open(e.target.href, '_blank');
+            }
+        });
         
         let debounceTimeout;
 

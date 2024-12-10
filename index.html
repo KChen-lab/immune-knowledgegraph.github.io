@@ -85,6 +85,18 @@
             text-decoration: none !important;
         }
 
+        /* Add these new styles */
+        .plotly-hover-text a {
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    
+        .plotly-hover-text a:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        
         /* Home tab content */
         .home-content {
             padding: 30px;
@@ -765,6 +777,14 @@ IGA
                     if (data.plot) {
                         const figure = JSON.parse(data.plot);
                         Plotly.newPlot(plotContainer, figure.data, figure.layout);
+                        plotContainer.on('plotly_hover', function(data) {
+                            const hoverInfo = document.querySelector('.hovertext');
+                            if (hoverInfo) {
+                                // Enable clicking on links within hover text
+                                hoverInfo.classList.add('plotly-hover-text');
+                                hoverInfo.style.pointerEvents = 'auto';
+                            }
+                        });
                     }
                     
                     // Display results table with side-by-side layout
@@ -1005,6 +1025,14 @@ IGA
                 console.log('Creating plot with data:', data.plot);
                 const figure = JSON.parse(data.plot);
                 Plotly.newPlot(plotContainer, figure.data, figure.layout);
+                plotContainer.on('plotly_hover', function(data) {
+                            const hoverInfo = document.querySelector('.hovertext');
+                            if (hoverInfo) {
+                                // Enable clicking on links within hover text
+                                hoverInfo.classList.add('plotly-hover-text');
+                                hoverInfo.style.pointerEvents = 'auto';
+                            }
+                        });
                 
             } catch (error) {
                 console.error('Mechanism analysis error:', error);

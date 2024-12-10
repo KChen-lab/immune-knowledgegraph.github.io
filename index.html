@@ -217,31 +217,6 @@
         button:hover {
             background-color: #0056b3;
         }
-
-        .plotly-tooltip-pmid {
-            color: #007bff;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        
-        /* Add this to make sure hover text links are visible */
-        .plotly-tooltip a {
-            color: #007bff !important;
-            text-decoration: underline !important;
-        }
-        
-        .plotly-tooltip a:hover {
-            color: #0056b3 !important;
-            text-decoration: none !important;
-        }
-
-        document.addEventListener('click', function(e) {
-            // Check if the clicked element is a PMID link in a Plotly tooltip
-            if (e.target.matches('.plotly-tooltip a[href*="pubmed.ncbi.nlm.nih.gov"]')) {
-                e.preventDefault();
-                window.open(e.target.href, '_blank');
-            }
-        });
         
         .loading-indicator {
             display: none;

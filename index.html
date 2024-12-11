@@ -68,35 +68,7 @@
             height: 2px;
             background-color: #007bff;
         }
-        /* PMID link styles */
-        .plotly-tooltip-pmid {
-            color: #007bff;
-            text-decoration: underline;
-            cursor: pointer;
-        }
 
-        .plotly-tooltip a {
-            color: #007bff !important;
-            text-decoration: underline !important;
-        }
-
-        .plotly-tooltip a:hover {
-            color: #0056b3 !important;
-            text-decoration: none !important;
-        }
-
-        /* Add these new styles */
-        .plotly-hover-text a {
-            color: #007bff;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-    
-        .plotly-hover-text a:hover {
-            color: #0056b3;
-            text-decoration: none;
-        }
-        
         /* Home tab content */
         .home-content {
             padding: 30px;
@@ -245,7 +217,7 @@
         button:hover {
             background-color: #0056b3;
         }
-        
+
         .loading-indicator {
             display: none;
             text-align: center;
@@ -551,12 +523,6 @@ IGA
     </div>
 
     <script>
-        document.addEventListener('click', function(e) {
-            if (e.target.matches('.plotly-tooltip a[href*="pubmed.ncbi.nlm.nih.gov"]')) {
-                e.preventDefault();
-                window.open(e.target.href, '_blank');
-            }
-        });
         
         let debounceTimeout;
 
@@ -776,54 +742,7 @@ IGA
                     // Display the plot if available
                     if (data.plot) {
                         const figure = JSON.parse(data.plot);
-                        const plotDiv = document.getElementById('plotContainer');
-                        
-                        // Create persistent hover popup
-                        const hoverPopup = document.createElement('div');
-                        hoverPopup.style.cssText = `
-                            position: fixed;
-                            display: none;
-                            background: white;
-                            border: 1px solid #ddd;
-                            border-radius: 4px;
-                            padding: 10px;
-                            max-width: 300px;
-                            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                            z-index: 1000;
-                            pointer-events: auto;
-                        `;
-                        document.body.appendChild(hoverPopup);
-                    
-                        // Set up hover event
-                        plotDiv.on('plotly_hover', function(data) {
-                            const point = data.points[0];
-                            if (point.text) {
-                                // Update popup content
-                                hoverPopup.innerHTML = point.text;
-                                
-                                // Position popup near the cursor
-                                hoverPopup.style.left = (data.event.pageX + 10) + 'px';
-                                hoverPopup.style.top = (data.event.pageY + 10) + 'px';
-                                hoverPopup.style.display = 'block';
-                            }
-                        });
-                    
-                        // Hide popup when clicking outside
-                        document.addEventListener('click', function(e) {
-                            if (!hoverPopup.contains(e.target) && e.target.tagName !== 'A') {
-                                hoverPopup.style.display = 'none';
-                            }
-                        });
-                    
-                        // Create plot with config
-                        const config = {
-                            displayModeBar: true,
-                            modeBarButtonsToRemove: ['toImage', 'sendDataToCloud'],
-                            displaylogo: false,
-                            responsive: true
-                        };
-                        
-                        Plotly.newPlot(plotDiv, figure.data, figure.layout, config);
+                        Plotly.newPlot(plotContainer, figure.data, figure.layout);
                     }
                     
                     // Display results table with side-by-side layout
@@ -1059,56 +978,11 @@ IGA
                     errorMessage.textContent = `Error: ${data.error}`;
                     return;
                 }
-
-                // Create persistent hover popup
-                const hoverPopup = document.createElement('div');
-                hoverPopup.style.cssText = `
-                    position: fixed;
-                    display: none;
-                    background: white;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    padding: 10px;
-                    max-width: 300px;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                    z-index: 1000;
-                    pointer-events: auto;
-                `;
-                document.body.appendChild(hoverPopup);
                 
                 // Parse and display the Plotly figure
                 console.log('Creating plot with data:', data.plot);
                 const figure = JSON.parse(data.plot);
-
-                // Create plot with config
-                const config = {
-                    displayModeBar: true,
-                    modeBarButtonsToRemove: ['toImage', 'sendDataToCloud'],
-                    displaylogo: false,
-                    responsive: true
-                };
-                
                 Plotly.newPlot(plotContainer, figure.data, figure.layout);
-                plotContainer.on('plotly_hover', function(plotlyEvent) {
-                    const point = plotlyEvent.points[0];
-                    if (point.text) {
-                        // Update popup content
-                        hoverPopup.innerHTML = point.text;
-                        
-                        // Position popup near the cursor
-                        const rect = plotContainer.getBoundingClientRect();
-                        hoverPopup.style.left = (plotlyEvent.event.pageX + 10) + 'px';
-                        hoverPopup.style.top = (plotlyEvent.event.pageY + 10) + 'px';
-                        hoverPopup.style.display = 'block';
-                    }
-                });
-        
-                // Hide popup when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!hoverPopup.contains(e.target) && e.target.tagName !== 'A') {
-                        hoverPopup.style.display = 'none';
-                    }
-                });
                 
             } catch (error) {
                 console.error('Mechanism analysis error:', error);

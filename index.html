@@ -839,7 +839,7 @@ IGA
                 });
                 
                 const data = await response.json();
-                console.log('Response data:', data);
+                console.log('Response data:', data); // For debugging
                 
                 if (data.error) {
                     errorMessage.style.display = 'block';
@@ -852,16 +852,16 @@ IGA
                     
                     let resultsHTML = '';
                     
-                    // Add the genes table using data.results
+                    // Add the genes table
                     if (data.results && data.results.length > 0) {
-                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
-                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
+                        const activatedGenes = data.results.filter(r => r.effect === 'activate').slice(0, 10);
+                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit').slice(0, 10);
                         
-                        resultsHTML = `
+                        resultsHTML += `
                             <h4 style="margin-top: 30px;">Impacted Genes</h4>
                             <div class="results-container">
                                 <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
+                                    <h4 style="color: #2ecc71;">Activated Genes (10)</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -880,7 +880,7 @@ IGA
                                     </table>
                                 </div>
                                 <div class="results-column">
-                                    <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
+                                    <h4 style="color: #e74c3c;">Inhibited Genes (10)</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -901,7 +901,7 @@ IGA
                             </div>`;
                     }
         
-                    // Add the phenotypes table using data.results_phenotype
+                    // Add the phenotypes table
                     if (data.results_phenotype && data.results_phenotype.length > 0) {
                         const activatedPhenotypes = data.results_phenotype.filter(r => r.effect === 'activate');
                         const inhibitedPhenotypes = data.results_phenotype.filter(r => r.effect === 'inhibit');
@@ -910,7 +910,7 @@ IGA
                             <h4 style="margin-top: 30px;">Impacted Phenotypes</h4>
                             <div class="results-container">
                                 <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Activated Phenotypes (${activatedPhenotypes.length})</h4>
+                                    <h4 style="color: #2ecc71;">Activated Phenotypes</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -929,7 +929,7 @@ IGA
                                     </table>
                                 </div>
                                 <div class="results-column">
-                                    <h4 style="color: #e74c3c;">Inhibited Phenotypes (${inhibitedPhenotypes.length})</h4>
+                                    <h4 style="color: #e74c3c;">Inhibited Phenotypes</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -949,7 +949,7 @@ IGA
                                 </div>
                             </div>`;
                     }
-        
+                    
                     // Set the HTML content
                     results.innerHTML = resultsHTML;
                 }

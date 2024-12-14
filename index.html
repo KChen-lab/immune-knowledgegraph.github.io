@@ -844,20 +844,12 @@ IGA
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = `Error: ${data.error}`;
                 } else {
-                    // Display the plot if available
-                    if (data.plot) {
-                        plotContainer.innerHTML = data.plot;
-                    }
-                    
                     // Display results in side-by-side layout
-                    if (data.results && data.results.length > 0) {
-                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
-                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
-                        
+                    if (data.activated_genes && data.inhibited_genes) {
                         results.innerHTML = `
                             <div class="results-container">
                                 <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
+                                    <h4 style="color: #2ecc71;">Activated Genes (${data.activated_genes.count})</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -866,7 +858,7 @@ IGA
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            ${activatedGenes.map(result => `
+                                            ${data.activated_genes.genes.map(result => `
                                                 <tr>
                                                     <td>${result.gene}</td>
                                                     <td>${result.score.toFixed(4)}</td>
@@ -876,7 +868,7 @@ IGA
                                     </table>
                                 </div>
                                 <div class="results-column">
-                                    <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
+                                    <h4 style="color: #e74c3c;">Inhibited Genes (${data.inhibited_genes.count})</h4>
                                     <table>
                                         <thead>
                                             <tr>
@@ -885,7 +877,7 @@ IGA
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            ${inhibitedGenes.map(result => `
+                                            ${data.inhibited_genes.genes.map(result => `
                                                 <tr>
                                                     <td>${result.gene}</td>
                                                     <td>${result.score.toFixed(4)}</td>

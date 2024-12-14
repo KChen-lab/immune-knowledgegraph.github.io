@@ -855,6 +855,7 @@ IGA
                         const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
                         
                         results.innerHTML = `
+                            <h4 style="margin-top: 30px;">Impacted Genes</h4>
                             <div class="results-container">
                                 <div class="results-column">
                                     <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
@@ -896,7 +897,7 @@ IGA
                                 </div>
                             </div>
         
-                            <h4 style="margin-top: 30px;">Associated Phenotypes</h4>
+                            <h4 style="margin-top: 30px;">Impacted Phenotypes</h4>
                             <div class="results-container">
                                 <div class="results-column">
                                     <h4 style="color: #2ecc71;">Activated Phenotypes</h4>

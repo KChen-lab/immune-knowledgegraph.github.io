@@ -966,6 +966,43 @@ IGA
                 loading.style.display = 'none';
             }
         }
+
+        function visualizePath(sourceNode, targetNode, nodeType) {
+            const cellType = document.getElementById('perturbCellType').value;
+            const pathPlotContainer = document.getElementById('pathVisualizationContainer');
+            
+            // Show loading state
+            pathPlotContainer.style.display = 'block';
+            pathPlotContainer.innerHTML = '<div class="loading-indicator">Generating path visualization...</div>';
+        
+            fetch('https://chloehe1129.pythonanywhere.com/visualize-path', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sourceNode: sourceNode,
+                    targetNode: targetNode,
+                    nodeType: nodeType,
+                    cellType: cellType
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    pathPlotContainer.innerHTML = `<div class="error-message">${data.error}</div>`;
+                } else {
+                    // Parse and display the Plotly figure
+                    const figure = JSON.parse(data.plot);
+                    pathPlotContainer.innerHTML = '<div id="pathPlot"></div>';
+                    Plotly.newPlot('pathPlot', figure.data, figure.layout);
+                }
+            })
+            .catch(error => {
+                pathPlotContainer.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+            });
+        }
+
         
         async function analyzeMechanism() {
             console.log('Starting mechanism analysis...');

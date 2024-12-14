@@ -849,7 +849,7 @@ IGA
                         plotContainer.innerHTML = data.plot;
                     }
                     
-                    // Display results in side-by-side layout
+                    // Display results in side-by-side layout for genes
                     if (data.results && data.results.length > 0) {
                         const activatedGenes = data.results.filter(r => r.effect === 'activate');
                         const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
@@ -891,6 +891,52 @@ IGA
                                                     <td>${result.score.toFixed(4)}</td>
                                                 </tr>
                                             `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+        
+                            <h4 style="margin-top: 30px;">Associated Phenotypes</h4>
+                            <div class="results-container">
+                                <div class="results-column">
+                                    <h4 style="color: #2ecc71;">Activated Phenotypes</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Phenotype</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${data.results_phenotype
+                                                .filter(r => r.effect === 'activate')
+                                                .map(result => `
+                                                    <tr>
+                                                        <td>${result.phenotype}</td>
+                                                        <td>${result.score.toFixed(4)}</td>
+                                                    </tr>
+                                                `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="results-column">
+                                    <h4 style="color: #e74c3c;">Inhibited Phenotypes</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Phenotype</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${data.results_phenotype
+                                                .filter(r => r.effect === 'inhibit')
+                                                .map(result => `
+                                                    <tr>
+                                                        <td>${result.phenotype}</td>
+                                                        <td>${result.score.toFixed(4)}</td>
+                                                    </tr>
+                                                `).join('')}
                                         </tbody>
                                     </table>
                                 </div>

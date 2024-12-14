@@ -1011,6 +1011,8 @@ IGA
             });
         }
         
+        // In your frontend JavaScript, update the visualization configuration:
+
         async function visualizePath(sourceNode, targetNode, nodeType) {
             const cellType = document.getElementById('perturbCellType').value;
             const pathPlotContainer = document.getElementById('pathVisualizationContainer');
@@ -1039,19 +1041,41 @@ IGA
                     const figure = JSON.parse(data.plot);
                     pathPlotContainer.innerHTML = '<div id="pathPlot"></div>';
                     
+                    // Configure Plotly with stable hover
                     const config = {
                         displayModeBar: true,
-                        responsive: true
+                        responsive: true,
+                        scrollZoom: false,  // Disable scroll zoom
+                        clickmode: 'event+select'  // Enable clicking
                     };
                     
+                    // Update layout for better hover behavior
                     figure.layout.hovermode = 'closest';
                     figure.layout.hoverlabel = {
                         bgcolor: "white",
                         font: { family: "Arial", size: 12, color: "black" },
-                        bordercolor: "#c8c8c8"
+                        bordercolor: "#c8c8c8",
+                        namelength: -1
                     };
         
-                    await Plotly.newPlot('pathPlot', figure.data, figure.layout, config);
+                    // Create the plot
+                    const plot = await Plotly.newPlot('pathPlot', figure.data, figure.layout, config);
+                    
+                    // Add event listener for hover
+                    const plotDiv = document.getElementById('pathPlot');
+                    plotDiv.on('plotly_hover', function(data) {
+                        // Add a class to make hover label stay
+                        const hoverLabels = document.getElementsByClassName('hoverlayer');
+                        for (let label of hoverLabels) {
+                            label.style.pointerEvents = 'auto';
+                        }
+                    });
+        
+                    // Make hover labels clickable
+                    const hoverLayer = plotDiv.querySelector('.hoverlayer');
+                    if (hoverLayer) {
+                        hoverLayer.style.pointerEvents = 'auto';
+                    }
                 }
             } catch (error) {
                 pathPlotContainer.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;

@@ -913,8 +913,8 @@ IGA
                                                 .filter(r => r.effect === 'activate')
                                                 .map(result => `
                                                     <tr>
-                                                        <td>${results_phenotype.phenotype}</td>
-                                                        <td>${results_phenotype.score.toFixed(4)}</td>
+                                                        <td>${result.phenotype}</td>
+                                                        <td>${result.score.toFixed(4)}</td>
                                                     </tr>
                                                 `).join('')}
                                         </tbody>
@@ -934,8 +934,8 @@ IGA
                                                 .filter(r => r.effect === 'inhibit')
                                                 .map(result => `
                                                     <tr>
-                                                        <td>${results_phenotype.phenotype}</td>
-                                                        <td>${results_phenotype.score.toFixed(4)}</td>
+                                                        <td>${result.phenotype}</td>
+                                                        <td>${result.score.toFixed(4)}</td>
                                                     </tr>
                                                 `).join('')}
                                         </tbody>

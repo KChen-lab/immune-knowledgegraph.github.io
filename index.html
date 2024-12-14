@@ -809,149 +809,157 @@ IGA
         }
         
         async function predictPerturbation() {
-            const perturbationGene = document.getElementById('perturbationGene').value.trim();
-            const cellType = document.getElementById('perturbCellType').value;
-            const loading = document.getElementById('perturbLoading');
-            const errorMessage = document.getElementById('perturbError');
-            const plotContainer = document.getElementById('plotContainer');
-            const results = document.getElementById('perturbResults');
-            
-            if (!perturbationGene) {
-                alert('Please enter a gene to perturb');
-                return;
-            }
-            
-            loading.style.display = 'block';
-            errorMessage.style.display = 'none';
-            plotContainer.innerHTML = '';
-            results.innerHTML = '';
-            
-            try {
-                const response = await fetch('https://chloehe1129.pythonanywhere.com/predict-perturbation', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        gene: perturbationGene,
-                        cellType: cellType
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    errorMessage.style.display = 'block';
-                    errorMessage.textContent = `Error: ${data.error}`;
-                } else {
-                    // Display the plot if available
-                    if (data.plot) {
-                        plotContainer.innerHTML = data.plot;
-                    }
-                    
-                    // Display results in side-by-side layout for genes
-                    if (data.results && data.results.length > 0) {
-                        const activatedGenes = data.results.filter(r => r.effect === 'activate');
-                        const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
-                        
-                        results.innerHTML = `
-                            <h4 style="margin-top: 30px;">Impacted Genes</h4>
-                            <div class="results-container">
-                                <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${activatedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="results-column">
-                                    <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${inhibitedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+           const perturbationGene = document.getElementById('perturbationGene').value.trim();
+           const cellType = document.getElementById('perturbCellType').value;
+           const loading = document.getElementById('perturbLoading');
+           const errorMessage = document.getElementById('perturbError');
+           const plotContainer = document.getElementById('plotContainer');
+           const results = document.getElementById('perturbResults');
+           
+           if (!perturbationGene) {
+               alert('Please enter a gene to perturb');
+               return;
+           }
+           
+           loading.style.display = 'block';
+           errorMessage.style.display = 'none';
+           plotContainer.innerHTML = '';
+           results.innerHTML = '';
+           
+           try {
+               const response = await fetch('https://chloehe1129.pythonanywhere.com/predict-perturbation', {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/json',
+                   },
+                   body: JSON.stringify({ 
+                       gene: perturbationGene,
+                       cellType: cellType
+                   })
+               });
+               
+               const data = await response.json();
+               console.log('Response data:', data); // Added console.log to check data
+               
+               if (data.error) {
+                   errorMessage.style.display = 'block';
+                   errorMessage.textContent = `Error: ${data.error}`;
+               } else {
+                   // Display the plot if available
+                   if (data.plot) {
+                       plotContainer.innerHTML = data.plot;
+                   }
+                   
+                   let resultsHTML = '';
+                   
+                   // First add the genes table
+                   if (data.results && data.results.length > 0) {
+                       const activatedGenes = data.results.filter(r => r.effect === 'activate');
+                       const inhibitedGenes = data.results.filter(r => r.effect === 'inhibit');
+                       
+                       resultsHTML = `
+                           <h4 style="margin-top: 30px;">Impacted Genes</h4>
+                           <div class="results-container">
+                               <div class="results-column">
+                                   <h4 style="color: #2ecc71;">Activated Genes (${activatedGenes.length})</h4>
+                                   <table>
+                                       <thead>
+                                           <tr>
+                                               <th>Gene</th>
+                                               <th>Score</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           ${activatedGenes.map(result => `
+                                               <tr>
+                                                   <td>${result.gene}</td>
+                                                   <td>${result.score.toFixed(4)}</td>
+                                               </tr>
+                                           `).join('')}
+                                       </tbody>
+                                   </table>
+                               </div>
+                               <div class="results-column">
+                                   <h4 style="color: #e74c3c;">Inhibited Genes (${inhibitedGenes.length})</h4>
+                                   <table>
+                                       <thead>
+                                           <tr>
+                                               <th>Gene</th>
+                                               <th>Score</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           ${inhibitedGenes.map(result => `
+                                               <tr>
+                                                   <td>${result.gene}</td>
+                                                   <td>${result.score.toFixed(4)}</td>
+                                               </tr>
+                                           `).join('')}
+                                       </tbody>
+                                   </table>
+                               </div>
+                           </div>`;
+                   }
         
-                            <h4 style="margin-top: 30px;">Impacted Phenotypes</h4>
-                            <div class="results-container">
-                                <div class="results-column">
-                                    <h4 style="color: #2ecc71;">Activated Phenotypes</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Phenotype</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${data.results_phenotype
-                                                .filter(r => r.effect === 'activate')
-                                                .map(result => `
-                                                    <tr>
-                                                        <td>${result.phenotype}</td>
-                                                        <td>${result.score.toFixed(4)}</td>
-                                                    </tr>
-                                                `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="results-column">
-                                    <h4 style="color: #e74c3c;">Inhibited Phenotypes</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Phenotype</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${data.results_phenotype
-                                                .filter(r => r.effect === 'inhibit')
-                                                .map(result => `
-                                                    <tr>
-                                                        <td>${result.phenotype}</td>
-                                                        <td>${result.score.toFixed(4)}</td>
-                                                    </tr>
-                                                `).join('')}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        `;
-                    }
-                }
-            } catch (error) {
-                console.error('Perturbation error:', error);
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = `Error: ${error.message}`;
-            } finally {
-                loading.style.display = 'none';
-            }
+                   // Then add the phenotypes table if the data exists
+                   if (data.results_phenotype && data.results_phenotype.length > 0) {
+                       const activatedPhenotypes = data.results_phenotype.filter(r => r.effect === 'activate');
+                       const inhibitedPhenotypes = data.results_phenotype.filter(r => r.effect === 'inhibit');
+                       
+                       resultsHTML += `
+                           <h4 style="margin-top: 30px;">Impacted Phenotypes</h4>
+                           <div class="results-container">
+                               <div class="results-column">
+                                   <h4 style="color: #2ecc71;">Activated Phenotypes (${activatedPhenotypes.length})</h4>
+                                   <table>
+                                       <thead>
+                                           <tr>
+                                               <th>Phenotype</th>
+                                               <th>Score</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           ${activatedPhenotypes.map(result => `
+                                               <tr>
+                                                   <td>${result.phenotype}</td>
+                                                   <td>${result.score.toFixed(4)}</td>
+                                               </tr>
+                                           `).join('')}
+                                       </tbody>
+                                   </table>
+                               </div>
+                               <div class="results-column">
+                                   <h4 style="color: #e74c3c;">Inhibited Phenotypes (${inhibitedPhenotypes.length})</h4>
+                                   <table>
+                                       <thead>
+                                           <tr>
+                                               <th>Phenotype</th>
+                                               <th>Score</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           ${inhibitedPhenotypes.map(result => `
+                                               <tr>
+                                                   <td>${result.phenotype}</td>
+                                                   <td>${result.score.toFixed(4)}</td>
+                                               </tr>
+                                           `).join('')}
+                                       </tbody>
+                                   </table>
+                               </div>
+                           </div>`;
+                   }
+        
+                   // Finally set the HTML content
+                   results.innerHTML = resultsHTML;
+               }
+           } catch (error) {
+               console.error('Perturbation error:', error);
+               errorMessage.style.display = 'block';
+               errorMessage.textContent = `Error: ${error.message}`;
+           } finally {
+               loading.style.display = 'none';
+           }
         }
         
         async function analyzeMechanism() {

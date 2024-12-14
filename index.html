@@ -489,6 +489,10 @@ PRF1
             <div id="perturbError" class="error-message"></div>
             <div id="plotContainer"></div>
             <div id="perturbResults"></div>
+            <div id="pathVisualizationContainer" style="margin-top: 30px; display: none;">
+                <h4>Path Visualization</h4>
+                <div id="pathPlot"></div>
+            </div>
         </div>
 
         <!-- Perturbation Mechanism Tab -->
@@ -814,6 +818,8 @@ IGA
         }
         
         async function predictPerturbation() {
+            console.log('Starting mechanism analysis...');
+            
             const perturbationGene = document.getElementById('perturbationGene').value.trim();
             const cellType = document.getElementById('perturbCellType').value;
             const loading = document.getElementById('perturbLoading');
@@ -844,7 +850,7 @@ IGA
                 });
                 
                 const data = await response.json();
-                console.log('Response data:', data); // For debugging
+                console.log('Response data:', data);
                 
                 if (data.error) {
                     errorMessage.style.display = 'block';
@@ -857,6 +863,30 @@ IGA
                     
                     let resultsHTML = '';
                     
+                    // Function to create table with clickable rows
+                    function createResultsTable(results, title, type) {
+                        return `
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>${type === 'gene' ? 'Gene' : 'Phenotype'}</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${results.map(result => `
+                                        <tr class="clickable-row" style="cursor: pointer;" 
+                                            onclick="visualizePath('${perturbationGene}', 
+                                            '${result[type]}', '${type}')">
+                                            <td>${result[type]}</td>
+                                            <td>${result.score.toFixed(4)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        `;
+                    }
+        
                     // Add the genes table
                     if (data.results && data.results.length > 0) {
                         const activatedGenes = data.results.filter(r => r.effect === 'activate').slice(0, 10);
@@ -867,45 +897,15 @@ IGA
                             <div class="results-container">
                                 <div class="results-column">
                                     <h4 style="color: #2ecc71;">Activated Genes (top 10)</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${activatedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
+                                    ${createResultsTable(activatedGenes, 'Activated Genes', 'gene')}
                                 </div>
                                 <div class="results-column">
                                     <h4 style="color: #e74c3c;">Inhibited Genes (top 10)</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Gene</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${inhibitedGenes.map(result => `
-                                                <tr>
-                                                    <td>${result.gene}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
+                                    ${createResultsTable(inhibitedGenes, 'Inhibited Genes', 'gene')}
                                 </div>
                             </div>`;
                     }
-        
+            
                     // Add the phenotypes table
                     if (data.results_phenotype && data.results_phenotype.length > 0) {
                         const activatedPhenotypes = data.results_phenotype.filter(r => r.effect === 'activate');
@@ -916,44 +916,21 @@ IGA
                             <div class="results-container">
                                 <div class="results-column">
                                     <h4 style="color: #2ecc71;">Activated Phenotypes (top 10)</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Phenotype</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${activatedPhenotypes.map(result => `
-                                                <tr>
-                                                    <td>${result.phenotype}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
+                                    ${createResultsTable(activatedPhenotypes, 'Activated Phenotypes', 'phenotype')}
                                 </div>
                                 <div class="results-column">
                                     <h4 style="color: #e74c3c;">Inhibited Phenotypes (top 10)</h4>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Phenotype</th>
-                                                <th>Score</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${inhibitedPhenotypes.map(result => `
-                                                <tr>
-                                                    <td>${result.phenotype}</td>
-                                                    <td>${result.score.toFixed(4)}</td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
+                                    ${createResultsTable(inhibitedPhenotypes, 'Inhibited Phenotypes', 'phenotype')}
                                 </div>
                             </div>`;
                     }
+        
+                    // Add the path visualization container
+                    resultsHTML += `
+                        <div id="pathVisualizationContainer" style="margin-top: 30px; display: none;">
+                            <h4>Path Visualization</h4>
+                            <div id="pathPlot"></div>
+                        </div>`;
                     
                     // Set the HTML content
                     results.innerHTML = resultsHTML;

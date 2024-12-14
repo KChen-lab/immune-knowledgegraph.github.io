@@ -972,7 +972,22 @@ IGA
                     // Parse and display the Plotly figure
                     const figure = JSON.parse(data.plot);
                     pathPlotContainer.innerHTML = '<div id="pathPlot"></div>';
-                    Plotly.newPlot('pathPlot', figure.data, figure.layout);
+                    
+                    // Add specific configuration for hover effects
+                    const config = {
+                        displayModeBar: true,
+                        responsive: true
+                    };
+                    
+                    // Add layout configuration for hover effects
+                    figure.layout.hovermode = 'closest';
+                    figure.layout.hoverlabel = {
+                        bgcolor: "white",
+                        font: { family: "Arial", size: 12, color: "black" },
+                        bordercolor: "#c8c8c8"
+                    };
+        
+                    Plotly.newPlot('pathPlot', figure.data, figure.layout, config);
                 }
             })
             .catch(error => {

@@ -167,17 +167,53 @@
             background-color: #f0f0f0;
         }
 
-        .suggestions-list .no-match-header {
-            padding: 8px 12px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            color: #666;
-            font-style: italic;
-            cursor: default;
+        .phenotype-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
         }
         
-        .suggestions-list .no-match-header:hover {
+        .check-button {
+            padding: 8px 16px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .check-button:hover {
+            background-color: #5a6268;
+        }
+        
+        .match-status {
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 4px;
             background-color: #f8f9fa;
+            border-left: 4px solid;
+        }
+        
+        .match-status.exact {
+            border-left-color: #28a745;
+        }
+        
+        .match-status.fuzzy {
+            border-left-color: #ffc107;
+        }
+        
+        .suggested-terms {
+            margin-top: 10px;
+        }
+        
+        .suggested-terms li {
+            padding: 5px 0;
+            cursor: pointer;
+            color: #007bff;
+        }
+        
+        .suggested-terms li:hover {
+            text-decoration: underline;
         }
         
         /* Other tab content styles */
@@ -494,9 +530,12 @@ PRF1
             <div class="input-section">
                 <div class="form-group">
                     <label for="phenotype">Enter phenotype:</label>
-                    <div class="autocomplete-wrapper">
+                    <div class="phenotype-input-container">
                         <input type="text" id="phenotype" placeholder="e.g., antigen-induced exhaustion">
-                        <ul id="suggestions" class="suggestions-list"></ul>
+                        <button onclick="checkPhenotype()" class="check-button">Check</button>
+                    </div>
+                    <div id="matchStatus" class="match-status" style="display: none;">
+                        <!-- Match status will be shown here -->
                     </div>
                 </div>
 
@@ -796,6 +835,58 @@ IGA
                 // Add a small delay to make the progress visible
                 setTimeout(resolve, 500);
             });
+        }
+
+        async function checkPhenotype() {
+            const phenotype = document.getElementById('phenotype').value.trim();
+            const matchStatus = document.getElementById('matchStatus');
+            
+            if (!phenotype) {
+                alert('Please enter a phenotype');
+                return;
+            }
+        
+            try {
+                const response = await fetch(`https://chloehe1129.pythonanywhere.com/search-nodes?query=${encodeURIComponent(phenotype)}`);
+                const data = await response.json();
+                
+                let statusHTML = '';
+                if (data.has_exact_match) {
+                    statusHTML = `
+                        <div class="exact">
+                            <strong>✓ Exact Match Found</strong>
+                            <p>The term "${phenotype}" exists in the graph.</p>
+                        </div>
+                    `;
+                } else {
+                    statusHTML = `
+                        <div class="fuzzy">
+                            <strong>No exact match found in the graph</strong>
+                            ${data.matches.length > 0 ? '<p>Are you interested in the following terms?</p>' : ''}
+                            ${data.matches.length > 0 ? `
+                                <ul class="suggested-terms">
+                                    ${data.matches.map(match => `
+                                        <li onclick="selectTerm('${match.value}')">${match.value}</li>
+                                    `).join('')}
+                                </ul>
+                            ` : '<p>No similar terms found.</p>'}
+                        </div>
+                    `;
+                }
+                
+                matchStatus.innerHTML = statusHTML;
+                matchStatus.style.display = 'block';
+                matchStatus.className = `match-status ${data.has_exact_match ? 'exact' : 'fuzzy'}`;
+            } catch (error) {
+                console.error('Error checking phenotype:', error);
+                matchStatus.innerHTML = '<div class="error">Error checking phenotype. Please try again.</div>';
+                matchStatus.style.display = 'block';
+            }
+        }
+        
+        function selectTerm(term) {
+            document.getElementById('phenotype').value = term;
+            document.getElementById('matchStatus').style.display = 'none';
         }
         
         async function generateGeneset() {

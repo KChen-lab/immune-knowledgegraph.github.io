@@ -872,9 +872,9 @@ IGA
             matchStatus.className = 'match-status loading';
         
             try {
-                // Use the correct server URL
+                console.log('Sending request for:', phenotype, 'with cell type:', cellType);
                 const response = await fetch(
-                    `/search-nodes?query=${encodeURIComponent(phenotype)}&cellType=${encodeURIComponent(cellType)}`
+                    `https://chloehe1129.pythonanywhere.com/search-nodes?query=${encodeURIComponent(phenotype)}&cellType=${encodeURIComponent(cellType)}`
                 );
                 
                 if (!response.ok) {
@@ -882,6 +882,7 @@ IGA
                 }
                 
                 const data = await response.json();
+                console.log('Received response:', data);
                 
                 if (data.error) {
                     matchStatus.innerHTML = `<div class="error">Error: ${data.error}</div>`;

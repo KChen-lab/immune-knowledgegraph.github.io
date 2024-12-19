@@ -842,9 +842,14 @@ IGA
         }
 
         async function checkPhenotype() {
+            console.log('checkPhenotype function called');  // Debug log
+            
             const phenotype = document.getElementById('phenotype').value.trim();
-            const cellType = document.getElementById('genesetCellType').value;  // Get selected cell type
+            const cellType = document.getElementById('genesetCellType').value;
             const matchStatus = document.getElementById('matchStatus');
+            
+            console.log('Phenotype:', phenotype);  // Debug log
+            console.log('Cell Type:', cellType);   // Debug log
             
             if (!phenotype) {
                 alert('Please enter a phenotype');
@@ -852,10 +857,14 @@ IGA
             }
         
             try {
-                const response = await fetch(
-                    `https://chloehe1129.pythonanywhere.com/search-nodes?query=${encodeURIComponent(phenotype)}&cellType=${encodeURIComponent(cellType)}`
-                );
+                const url = `https://chloehe1129.pythonanywhere.com/search-nodes?query=${encodeURIComponent(phenotype)}&cellType=${encodeURIComponent(cellType)}`;
+                console.log('Fetching URL:', url);  // Debug log
+                
+                const response = await fetch(url);
+                console.log('Response received:', response);  // Debug log
+                
                 const data = await response.json();
+                console.log('Data received:', data);  // Debug log
                 
                 if (data.error) {
                     matchStatus.innerHTML = `<div class="error">Error: ${data.error}</div>`;
@@ -888,6 +897,7 @@ IGA
                     `;
                 }
                 
+                console.log('Setting HTML:', statusHTML);  // Debug log
                 matchStatus.innerHTML = statusHTML;
                 matchStatus.style.display = 'block';
                 matchStatus.className = `match-status ${data.has_exact_match ? 'exact' : 'fuzzy'}`;

@@ -166,6 +166,19 @@
         .suggestions-list li:hover {
             background-color: #f0f0f0;
         }
+
+        .suggestions-list .no-match-header {
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            color: #666;
+            font-style: italic;
+            cursor: default;
+        }
+        
+        .suggestions-list .no-match-header:hover {
+            background-color: #f8f9fa;
+        }
         
         /* Other tab content styles */
         .tab-content {
@@ -609,13 +622,24 @@ IGA
                 
                 try {
                     const response = await fetch(`https://chloehe1129.pythonanywhere.com/search-nodes?query=${encodeURIComponent(query)}`);
-                    const suggestions = await response.json();
+                    const data = await response.json();
                     
                     const suggestionsList = document.getElementById('suggestions');
-                    if (suggestions.length > 0) {
-                        suggestionsList.innerHTML = suggestions.map(s => 
+                    if (data.matches.length > 0) {
+                        let suggestionsHTML = '';
+                        
+                        if (!data.has_exact_match) {
+                            suggestionsHTML += `
+                                <li class="no-match-header">
+                                    No exact match found in the graph, are you interested in the following terms?
+                                </li>`;
+                        }
+                        
+                        suggestionsHTML += data.matches.map(s => 
                             `<li data-value="${s.value}">${s.value}</li>`
                         ).join('');
+                        
+                        suggestionsList.innerHTML = suggestionsHTML;
                         suggestionsList.style.display = 'block';
                     } else {
                         suggestionsList.style.display = 'none';

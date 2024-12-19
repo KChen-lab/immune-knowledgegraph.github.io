@@ -197,6 +197,10 @@
         .match-status.exact {
             border-left-color: #28a745;
         }
+
+        .match-status.error {
+            border-left-color: #dc3545;
+        }
         
         .match-status.fuzzy {
             border-left-color: #ffc107;
@@ -839,6 +843,7 @@ IGA
 
         async function checkPhenotype() {
             const phenotype = document.getElementById('phenotype').value.trim();
+            const cellType = document.getElementById('genesetCellType').value;  // Get selected cell type
             const matchStatus = document.getElementById('matchStatus');
             
             if (!phenotype) {
@@ -847,22 +852,31 @@ IGA
             }
         
             try {
-                const response = await fetch(`https://chloehe1129.pythonanywhere.com/search-nodes?query=${encodeURIComponent(phenotype)}`);
+                const response = await fetch(
+                    `https://chloehe1129.pythonanywhere.com/search-nodes?query=${encodeURIComponent(phenotype)}&cellType=${encodeURIComponent(cellType)}`
+                );
                 const data = await response.json();
+                
+                if (data.error) {
+                    matchStatus.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                    matchStatus.style.display = 'block';
+                    matchStatus.className = 'match-status error';
+                    return;
+                }
                 
                 let statusHTML = '';
                 if (data.has_exact_match) {
                     statusHTML = `
                         <div class="exact">
                             <strong>✓ Exact Match Found</strong>
-                            <p>The term "${phenotype}" exists in the graph.</p>
+                            <p>The term "${phenotype}" exists in the ${cellType} cell graph.</p>
                         </div>
                     `;
                 } else {
                     statusHTML = `
                         <div class="fuzzy">
-                            <strong>No exact match found in the graph</strong>
-                            ${data.matches.length > 0 ? '<p>Are you interested in the following terms?</p>' : ''}
+                            <strong>No exact match found in the ${cellType} cell graph</strong>
+                            ${data.matches.length > 0 ? `<p>Are you interested in the following terms?</p>` : ''}
                             ${data.matches.length > 0 ? `
                                 <ul class="suggested-terms">
                                     ${data.matches.map(match => `
@@ -881,6 +895,7 @@ IGA
                 console.error('Error checking phenotype:', error);
                 matchStatus.innerHTML = '<div class="error">Error checking phenotype. Please try again.</div>';
                 matchStatus.style.display = 'block';
+                matchStatus.className = 'match-status error';
             }
         }
         

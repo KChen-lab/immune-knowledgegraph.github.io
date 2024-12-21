@@ -55,6 +55,37 @@
             color: #007bff;
         }
 
+        .hoverlabel {
+            pointer-events: auto !important;
+            cursor: pointer;
+        }
+        
+        .js-plotly-plot .plotly .modebar {
+            z-index: 999;
+        }
+        
+        .plotly-hover-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            position: absolute;
+            pointer-events: auto !important;
+            max-width: 300px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .plotly-hover-box a {
+            color: #007bff;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px 0;
+        }
+        
+        .plotly-hover-box a:hover {
+            text-decoration: underline;
+        }
+        
         .tab-button.active {
             color: #007bff;
         }

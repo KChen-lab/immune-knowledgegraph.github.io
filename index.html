@@ -1139,7 +1139,41 @@ IGA
                     // Display the plot if available
                     if (data.plot) {
                         const figure = JSON.parse(data.plot);
-                        Plotly.newPlot(plotContainer, figure.data, figure.layout);
+                        
+                        // Add configuration for stable hover and clickable elements
+                        const config = {
+                            displayModeBar: true,
+                            responsive: true,
+                            scrollZoom: false,
+                            clickmode: 'event+select'
+                        };
+                        
+                        // Update layout for better hover behavior
+                        figure.layout.hovermode = 'closest';
+                        figure.layout.hoverlabel = {
+                            bgcolor: "white",
+                            font: { family: "Arial", size: 12, color: "black" },
+                            bordercolor: "#c8c8c8",
+                            namelength: -1
+                        };
+                
+                        // Create the plot
+                        const plot = await Plotly.newPlot(plotContainer, figure.data, figure.layout, config);
+                        
+                        // Add event listener for hover
+                        plotContainer.on('plotly_hover', function(data) {
+                            // Add a class to make hover label stay
+                            const hoverLabels = document.getElementsByClassName('hoverlayer');
+                            for (let label of hoverLabels) {
+                                label.style.pointerEvents = 'auto';
+                            }
+                        });
+                
+                        // Make hover labels clickable
+                        const hoverLayer = plotContainer.querySelector('.hoverlayer');
+                        if (hoverLayer) {
+                            hoverLayer.style.pointerEvents = 'auto';
+                        }
                     }
                     
                     // Display results table with side-by-side layout

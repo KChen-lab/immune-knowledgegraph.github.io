@@ -535,10 +535,7 @@
         <div class="tabs">
             <button class="tab-button active" onclick="switchTab('home')">Home</button>
             <button class="tab-button" onclick="switchTab('tab1')">Gene Set Annotation</button>
-            <button class="tab-button" onclick="switchTab('tab2')">Phenotype of Genes (Forward Genetics)</button>
-            <button class="tab-button" onclick="switchTab('tab3')">Gene Perturbation Effect (Reverse Genetics)</button>
-            <button class="tab-button" onclick="switchTab('tab4')">Perturbation Mechanism</button>
-            <button class="tab-button" onclick="switchTab('tab5')">FAQ</button>
+            <button class="tab-button" onclick="switchTab('tab2')">FAQ</button>
         </div>
 
         <!-- Home Tab -->
@@ -614,134 +611,7 @@ PRF1
             <div id="geneSetResults"></div>
         </div>
 
-        <!-- Phenotype to Genes (Forward Genetics) Tab -->
         <div id="tab2" class="tab-content">
-            <p class="home-description">
-                "Forward genetics is a molecular genetics approach of determining the genetic basis responsible for a phenotype"
-                <br><br>
-                Generate top 10 cell type-specific genes associated with your phenotype of interest. Enter a phenotype (e.g., "antigen-induced exhaustion") 
-                and select a cell type to discover genes and potential mechanism in which these genes contribute to that biological process, backed by literature evidence.
-                <br><br>
-                - Manuscript reference: "ICKGs hypothesize molecular mechanisms associated with immunophenotypes"
-            </p>
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="phenotype">Enter phenotype:</label>
-                    <div class="phenotype-input-container">
-                        <input type="text" id="phenotype" placeholder="e.g., antigen-induced exhaustion">
-                        <button onclick="checkPhenotype()" class="check-button">Check</button>
-                    </div>
-                    <div id="matchStatus" class="match-status" style="display: none;">
-                        <!-- Match status will be shown here -->
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="genesetCellType">Cell Type:</label>
-                    <select id="genesetCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                        <option value="M">Macrophage</option>
-                    </select>
-                </div>
-
-                <button onclick="generateGeneset()">Generate Gene Set</button>
-            </div>
-            <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
-            <div id="genesetError" class="error-message"></div>
-            <div id="plotContainer"></div>
-            <div id="genesetResults"></div>
-        </div>
-
-        <!-- Gene Perturbation effect (Reverse Genetics) Tab -->
-        <div id="tab3" class="tab-content">
-            <p class="home-description">
-                "Reverse genetics is a method in molecular genetics that is used to help understand the function(s) of a gene by analysing the phenotypic effects 
-                caused by the alteration of the gene"
-                <br><br>
-                Output top 10 activated or inhibited genes/phenotypes by a gene of interest based on PageRank score. 
-                This analysis could potentially inform on the change in genetic and phenotypic landscape with the experimental perturbation of that gene. 
-                Input a gene of interest and cell type to analyze how it affect molecular or functional level in a corresponding cell type, based on statistical analysis of the knowledge graph.
-                <br><br>
-                - Manuscript reference: "ICKGs predict shift in transcriptomic profiles following experimental manipulations"
-            </p>
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="perturbationGene">Gene:</label>
-                    <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
-                </div>
-
-                <div class="form-group">
-                    <label for="perturbCellType">Cell Type:</label>
-                    <select id="perturbCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                        <option value="M">Macrophage</option>
-                    </select>
-                </div>
-
-                <button onclick="predictPerturbation()">Analyze Perturbation</button>
-            </div>
-            <div id="perturbLoading" class="loading-indicator">Analyzing perturbation effects, please wait...</div>
-            <div id="perturbError" class="error-message"></div>
-            <div id="plotContainer"></div>
-            <div id="perturbResults"></div>
-            <div id="pathVisualizationContainer" style="margin-top: 30px; display: none;">
-                <h4>Path Visualization</h4>
-                <div id="pathPlot"></div>
-            </div>
-            <div class="popup-overlay" id="loadingPopup">
-                <div class="popup-content">
-                    <div class="loader"></div>
-                    <p>Querying subgraph...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Perturbation Mechanism Tab -->
-        <div id="tab4" class="tab-content">
-            <p class="home-description">
-                Investigate the relationship among genes. Input a key gene of interests and some downstream gene of interests to visualize 
-                and understand the molecular pathways through which the key gene influences downstream genes.
-                <br><br>
-                - Manuscript reference: "ICKGs predict shift in transcriptomic profiles following experimental manipulations"
-            </p>
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="mechanismGenes">Enter genes of interest (one per line):</label>
-                    <textarea id="mechanismGenes" placeholder="Example:
-NMMHCIIA
-PLCG2
-IGA
-..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="mechanismPerturbGene">Perturbation Gene:</label>
-                    <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
-                </div>
-
-                <div class="form-group">
-                    <label for="mechanismCellType">Cell Type:</label>
-                    <select id="mechanismCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                        <option value="M">Macrophage</option>
-                    </select>
-                </div>
-
-                <button onclick="analyzeMechanism()">Analyze Mechanism</button>
-            </div>
-            <div id="mechanismLoading" class="loading-indicator">Analyzing mechanism, please wait...</div>
-            <div id="mechanismError" class="error-message"></div>
-            <div id="mechanismPlot"></div>
-        </div>
-
-        <div id="tab5" class="tab-content">
             <div class="faq-section">
                 <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
                 

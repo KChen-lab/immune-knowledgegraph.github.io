@@ -566,13 +566,24 @@
         </div>
 
         <!-- Gene Set Annotation Tab -->
-        <div id="tab1" class="tab-content">
-             <p class="home-description">
-                Analyze a set of genes to discover their pathway relationships in specific immune cell types. Input your genes of interest 
-                and select a cell type to identify significant pathway associations supported by published literature. 
-                <br><br>
-                - Manuscript reference: "ICKGs outperform traditional enrichment methods in gene set annotation"
-            </p>
+            <div id="tab1" class="tab-content">
+                 <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <!-- Left side image -->
+                <div style="flex: 1; padding-right: 20px;">
+                    <img src="./image/ExamplePageRankMechanism.pdf" alt="Gene Set Annotation" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                </div>
+                
+                <!-- Right side description -->
+                <div style="flex: 1;">
+                    <p class="home-description">
+                        Analyze a set of genes to discover their pathway relationships in specific immune cell types. Input your genes of interest 
+                        and select a cell type to identify significant pathway associations supported by published literature. 
+                        <br><br>
+                        - Manuscript reference: "ICKGs outperform traditional enrichment methods in gene set annotation"
+                    </p>
+                </div>
+            </div>
+            
             <div class="input-section">
                 <div class="form-group">
                     <label for="geneInput">Enter gene names (one per line) to analyze pathway relationships:</label>
@@ -580,30 +591,31 @@
 GZMK
 PRF1
 ..."></textarea>
-                </div>
+        </div>
 
-                <div class="form-group">
-                    <label for="cellType">Select Cell Type:</label>
-                    <select id="cellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                        <option value="M">Macrophage</option>
-                    </select>
-                </div>
+        <div class="form-group">
+            <label for="cellType">Select Cell Type:</label>
+            <select id="cellType" required>
+                <option value="NK">NK Cell</option>
+                <option value="T">T Cell</option>
+                <option value="B">B Cell</option>
+                <option value="M">Macrophage</option>
+            </select>
+        </div>
 
-                <div id="progressContainer" class="progress-container">
-                    <div class="progress-bar-outer">
-                        <div id="progressBar" class="progress-bar-inner"></div>
-                    </div>
-                    <div id="progressText" class="progress-text">Initializing...</div>
-                    <div class="progress-steps">
-                        <div class="progress-step" data-step="validation">Validation</div>
-                        <div class="progress-step" data-step="processing">Processing</div>
-                        <div class="progress-step" data-step="analysis">Analysis</div>
-                        <div class="progress-step" data-step="completion">Completion</div>
-                    </div>
-                </div>
+        <div id="progressContainer" class="progress-container">
+            <div class="progress-bar-outer">
+                <div id="progressBar" class="progress-bar-inner"></div>
+            </div>
+            <div id="progressText" class="progress-text">Initializing...</div>
+            <div class="progress-steps">
+                <div class="progress-step" data-step="validation">Validation</div>
+                <div class="progress-step" data-step="processing">Processing</div>
+                <div class="progress-step" data-step="analysis">Analysis</div>
+                <div class="progress-step" data-step="completion">Completion</div>
+            </div>
+        </div>
+        
                 
                 <button onclick="analyzeGenes()">Analyze</button>
             </div>

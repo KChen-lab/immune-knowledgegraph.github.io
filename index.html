@@ -622,6 +622,8 @@ PRF1
         
                 
                 <button onclick="analyzeGenes()">Analyze</button>
+                <button id="downloadButton" onclick="downloadResults()" disabled style="background-color: #6c757d; margin-left: 10px;">Download Results</button>
+
             </div>
             <div id="geneSetLoading" class="loading-indicator">Analyzing genes, please wait...</div>
             <div id="geneSetResults"></div>
@@ -751,6 +753,52 @@ PRF1
             event.currentTarget.classList.add('active');
         }
 
+        function downloadResults() {
+            const results = document.getElementById('geneSetResults');
+            if (!results.innerHTML.trim()) {
+                alert('No results to download. Please analyze genes first.');
+                return;
+            }
+            
+            // Extract table data
+            const table = results.querySelector('table');
+            if (!table) {
+                alert('No table data found to download.');
+                return;
+            }
+            
+            // Convert table to CSV
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    // Replace any commas in the cell text to avoid CSV issues
+                    rowData.push('"' + cell.textContent.replace(/"/g, '""') + '"');
+                });
+                csv.push(rowData.join(','));
+            });
+            
+            // Combine rows with newlines
+            const csvContent = csv.join('\n');
+            
+            // Create and trigger download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const cellType = document.getElementById('cellType').value;
+            
+            // Create a URL for the blob
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `gene_set_analysis_${cellType}_${new Date().toISOString().slice(0,10)}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
         async function analyzeGenes() {
             const geneInput = document.getElementById('geneInput').value;
             const cellType = document.getElementById('cellType').value;
@@ -772,6 +820,10 @@ PRF1
             progressContainer.style.display = 'block';
             results.innerHTML = '';
             progressBar.style.width = '0%';
+            
+            // Disable download button while processing
+            document.getElementById('downloadButton').disabled = true;
+            document.getElementById('downloadButton').style.backgroundColor = '#6c757d';
             
             // Update progress steps
             updateProgressStep('validation');
@@ -808,6 +860,7 @@ PRF1
                 
                 if (data.error) {
                     results.innerHTML = `<div class="error-message">Error: ${data.error}</div>`;
+                    document.getElementById('downloadButton').disabled = true;
                 } else {
                     const table = `
                         <table>
@@ -832,10 +885,15 @@ PRF1
                         </table>
                     `;
                     results.innerHTML = table;
+                    
+                    // Enable download button when results are available
+                    document.getElementById('downloadButton').disabled = false;
+                    document.getElementById('downloadButton').style.backgroundColor = '#007bff';
                 }
             } catch (error) {
                 results.innerHTML = `<div class="error-message">Error: Failed to connect to the server</div>`;
                 console.error('Analysis error:', error);
+                document.getElementById('downloadButton').disabled = true;
             } finally {
                 // Hide loading indicator after a brief delay
                 setTimeout(() => {

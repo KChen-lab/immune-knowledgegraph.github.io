@@ -263,6 +263,53 @@
             text-decoration: underline;
         }
 
+        /* Examples tab styles */
+        .examples-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .example-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .example-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .example-description {
+            margin-bottom: 15px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .example-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .example-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .example-link:hover {
+            background-color: #0056b3;
+        }
+        
         .faq-section {
             padding: 20px;
             max-width: 800px;
@@ -535,6 +582,7 @@
         <div class="tabs">
             <button class="tab-button active" onclick="switchTab('home')">Home</button>
             <button class="tab-button" onclick="switchTab('tab1')">Gene Set Annotation</button>
+            <button class="tab-button" onclick="switchTab('Examples')">Examples</button>
             <button class="tab-button" onclick="switchTab('tab2')">FAQ</button>
         </div>
 
@@ -629,6 +677,61 @@ PRF1
             <div id="geneSetResults"></div>
         </div>
 
+        <!-- Examples Tab (New) -->
+        <div id="Examples" class="tab-content">
+            <div class="examples-container">
+                <h2>Example Results Comparison</h2>
+                <p class="tab-description">
+                    Compare the results of traditional Over-Representation Analysis (ORA) with our Immune Cell Knowledge Graph (ICKG) approach on several gene sets.
+                    Click on the links to view detailed results for each example.
+                </p>
+        
+                <div class="example-card">
+                    <h3 class="example-title">CD4 Unassigned Gene Set</h3>
+                    <p class="example-description">
+                        This example shows the pathway analysis results for CD4 T cell unassigned gene set. ICKG results provide more cell type specific and literature-backed pathway associations compared to traditional ORA.
+                    </p>
+                    <div class="example-links">
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD4_un1_ora.csv" class="example-link">ORA Results</a>
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD4_un1.csv" class="example-link">ICKG Results</a>
+                    </div>
+                </div>
+        
+                <div class="example-card">
+                    <h3 class="example-title">CD4 Dysfunction Gene Set</h3>
+                    <p class="example-description">
+                        Analysis of genes associated with CD4 T cell dysfunction. The ICKG approach reveals functional relationships backed by literature evidence, highlighting immune checkpoint pathways and exhaustion markers.
+                    </p>
+                    <div class="example-links">
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD4_dys_ora.csv" class="example-link">ORA Results</a>
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD4_dys.csv" class="example-link">ICKG Results</a>
+                    </div>
+                </div>
+        
+                <div class="example-card">
+                    <h3 class="example-title">CD8 Unassigned Gene Set</h3>
+                    <p class="example-description">
+                        Pathway analysis for CD8 T cell unassigned gene set, demonstrating how ICKG can identify relevant biological pathways that may be missed by traditional ORA approaches.
+                    </p>
+                    <div class="example-links">
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD8_un1_ora.csv" class="example-link">ORA Results</a>
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD8_un1.csv" class="example-link">ICKG Results</a>
+                    </div>
+                </div>
+        
+                <div class="example-card">
+                    <h3 class="example-title">CD8 Chromatin Gene Set</h3>
+                    <p class="example-description">
+                        This example shows analysis of chromatin-associated genes in CD8 T cells. ICKG analysis reveals specific functional relationships related to epigenetic regulation and its impact on T cell function.
+                    </p>
+                    <div class="example-links">
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD4_chromatin_ora.csv" class="example-link">ORA Results</a>
+                        <a href="/view-csv?file=/home/chloehe1129/immune-network/CD8_chromatin.csv" class="example-link">ICKG Results</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div id="tab2" class="tab-content">
             <div class="faq-section">
                 <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>

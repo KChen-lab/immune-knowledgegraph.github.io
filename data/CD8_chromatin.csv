@@ -1,0 +1,68 @@
+"","Score","P.value","CI_Lower","CI_Upper"
+"cell adhesion",0.008845,0.001,1.9e-05,0.000342
+"specific cancer-related gene sets",0.006676,0.001,7e-06,8.3e-05
+"co-culture systems",0.005336,0.002,1.2e-05,0.000164
+"acidic substance-related gene sets",0.0052,0.001,6e-06,6.5e-05
+"immune modulation",0.000966,0.027,0.000133,0.000994
+"heightened reactive oxygen species production",0.000687,0.014,5.8e-05,4e-04
+"lipid peroxidation byproducts",0.000687,0.014,5.8e-05,4e-04
+"disease outcome",0.000671,0.02,1.5e-05,0.000534
+"tumor immunosuppression",0.000385,0.025,1.5e-05,0.000374
+"cancer therapy resistance",0.000363,0.007,4e-06,9.1e-05
+"tumoricidal capacity",0.000198,0.01,3.6e-05,0.000181
+"anti-tumor efficacy",0.000128,0.047,2e-05,0.000175
+"effector cytokine secretion",0.000108,0.032,8e-06,0.000115
+"cancer cell infection",9.7e-05,0.026,5e-06,9.3e-05
+"immunocytes' activation",9e-05,0.005,1e-06,2.4e-05
+"immunoglobulin deficiency",8e-05,0.001,0,0
+"respiratory disease",6.8e-05,0.013,0,3.4e-05
+"precision cancer immunotherapies",5.2e-05,0.018,1e-06,4.3e-05
+"terminal differentiation",5.1e-05,0.042,3e-06,0.000197
+"dual-lymphoid activation",5.1e-05,0.033,5e-06,5.4e-05
+"rapid antitumor effects",4.1e-05,0.021,5e-06,3.5e-05
+"tumor size",3.3e-05,0.035,3e-06,3.6e-05
+"intratumoral neurodegeneration",3.1e-05,0.037,2e-06,7.3e-05
+"marrow-residence genes",2.8e-05,0.037,3e-06,3.4e-05
+"left-sided malignant epithelia",2.7e-05,0.039,1e-06,3e-05
+"substantial global tumor regression",2.5e-05,0.03,3e-06,3e-05
+"cancer immunotherapy resistance",2.5e-05,0.034,4e-06,2.6e-05
+"portal inflammation",2.4e-05,0.025,1e-06,2.2e-05
+"castration resistance",2.3e-05,0.039,2e-06,3.7e-05
+"severe cutaneous adverse reaction",2.1e-05,0.018,2e-06,1.7e-05
+"widespread skin lesions",2.1e-05,0.018,2e-06,1.7e-05
+"efficient immune synapse formation",2.1e-05,0.012,1e-06,1.3e-05
+"rational combination treatments",2e-05,0.034,2e-06,2.3e-05
+"advanced cutaneous melanoma",1.6e-05,0.025,1e-06,1.5e-05
+"costimulation-dependent dysfunctional programs",1.6e-05,0.013,0,8e-06
+"dysfunctional cells",1.6e-05,0.012,0,8e-06
+"immune-mediated clearance",1.6e-05,0.026,2e-06,1.6e-05
+"virus-derived antigenic peptides",1.5e-05,0.013,0,8e-06
+"hypersensitivity reaction",1.5e-05,0.018,1e-06,1.2e-05
+"parietal cell loss",1.4e-05,0.031,1e-06,1.7e-05
+"clinical remission",1.2e-05,0.035,1e-06,2e-05
+"subsequent immune infiltration",1.1e-05,0.047,1e-06,2.1e-05
+"anti-acetylcholine receptor antibody production",1e-05,0.042,1e-06,1.7e-05
+"mild cytokine release syndrome",1e-05,0.05,1e-06,2.6e-05
+"tumor-specific immunity",9e-06,0.05,1e-06,1.9e-05
+"response heterogeneity",8e-06,0.025,0,7e-06
+"dysregulated immune reactions",8e-06,0.025,0,7e-06
+"trained immunity induction",8e-06,0.026,0,8e-06
+"proinflammatory polarization",8e-06,0.025,0,7e-06
+"divergent cellular response",8e-06,0.025,0,7e-06
+"co-mutated lung adenocarcinoma",8e-06,0.036,0,1.4e-05
+"higher tumor grades",8e-06,0.039,1e-06,9e-06
+"shorter recurrence-free survival",8e-06,0.041,1e-06,9e-06
+"human leukocyte antigen background",8e-06,0.014,0,4e-06
+"decreased antigen recognition ability",8e-06,0.017,0,5e-06
+"long-term immunologic memory",6e-06,0.043,1e-06,1e-05
+"diffuse glioma",6e-06,0.013,0,3e-06
+"mammary tumorigenesis",4e-06,0.035,0,7e-06
+"immune system development",4e-06,0.035,0,6e-06
+"increased osteoblast mineralization",4e-06,0.026,0,4e-06
+"heparan sulfate backbone synthesis",3e-06,0.015,0,2e-06
+"viral gene expression",3e-06,0.047,0,5e-06
+"receptor internalization",2e-06,0.01,0,1e-06
+"local expansion",1e-06,0.027,0,1e-06
+"thymus function",0,0.038,0,1e-06
+"conditionally replicative adenoviruses",0,0.021,0,0
+"zeste homolog 2 methyltransferase",0,0.047,0,0

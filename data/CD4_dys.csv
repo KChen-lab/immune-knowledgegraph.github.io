@@ -1,0 +1,97 @@
+"","Score","P.value","CI_Lower","CI_Upper"
+"cancer progression",0.01531,0.007,0.000528,0.008989
+"antitumor immune responses",0.008054,0.032,0.000705,0.00868
+"anti-tumor immunity",0.007462,0.027,0.000431,0.007577
+"myeloid cells",0.00494,0.049,0.00046,0.008028
+"anti-tumor function",0.003531,0.005,5e-06,6.5e-05
+"complete tumor eradication",0.002306,0.009,0.00015,0.00092
+"subsequent differentiation",0.001866,0.011,1e-06,6.5e-05
+"liver tumor progression",0.001703,0.01,9.5e-05,0.00117
+"tumor amino acid metabolism",0.001333,0.017,1.1e-05,7.1e-05
+"autoimmune disease",0.001303,0.034,8.3e-05,0.002177
+"cancer cell growth",0.001035,0.032,9.5e-05,0.001157
+"effector population",0.000984,0.03,5.6e-05,0.001026
+"tumor escape",0.000499,0.016,5e-05,0.000369
+"gastric cancer pathogenesis",0.000473,0.01,2.3e-05,0.000288
+"cancer heterogeneity",0.000451,0.007,1.6e-05,0.000264
+"critical acute myositis",0.000385,0.048,3.7e-05,0.000439
+"cancer immunosurveillance",0.00032,0.012,1.4e-05,0.000125
+"tumour-promoting functions",0.000303,0.014,1.2e-05,9.8e-05
+"early tertiary lymphoid structure",0.000294,0.014,3e-06,8.3e-05
+"striking tumor regression",0.00026,0.049,2.2e-05,0.00039
+"cellular immune responses",0.000198,0.03,1.3e-05,0.000215
+"local tumor control",0.000192,0.031,2e-05,0.000204
+"pancreatic cancer growth",0.000184,0.043,3.1e-05,0.000227
+"histone lysine methyltransferase",0.000183,0.03,1.1e-05,0.000187
+"gastric cancer immunotherapy",0.00018,0.011,2.6e-05,0.000143
+"exhaustion markers",0.000162,0.046,2.5e-05,0.000302
+"ischemia reperfusion injury-related phenotypes",0.00015,0.03,2.5e-05,0.000189
+"long-term protective immunity",0.000124,0.039,2.1e-05,0.000177
+"cancer cell extravasation",0.000112,0.023,1e-05,8.8e-05
+"gamma interferon",0.000106,0.043,2.3e-05,0.000131
+"liver metastasis formation",9.1e-05,0.022,8e-06,6.6e-05
+"tumour suppression",9.1e-05,0.015,4e-06,3.7e-05
+"ectopic accumulation",8.9e-05,0.05,4e-06,0.000253
+"cancer cell transmigration",7.8e-05,0.027,6e-06,8e-05
+"effector function inhibition",7.5e-05,0.032,9e-06,8.9e-05
+"spontaneous lung cancer development",7.4e-05,0.049,2e-06,0.000168
+"early cancer development",7.4e-05,0.049,2e-06,0.000168
+"lung carcinogenesis",7.4e-05,0.049,2e-06,0.000168
+"immune-mediated acute liver injury",7.3e-05,0.047,1.4e-05,0.000109
+"anti-inflammation effect",7.1e-05,0.043,2e-06,0.000101
+"successful tumor rejection",6.9e-05,0.035,1.1e-05,8.1e-05
+"cancer cell death",6.3e-05,0.041,4e-06,7.8e-05
+"immune system balance",5.9e-05,0.009,3e-06,1.8e-05
+"combination immunotherapy",5.1e-05,0.014,0,1.5e-05
+"personalized cancer vaccination strategies",4.9e-05,0.027,4e-06,5.1e-05
+"tertiary lymphoid structure-like lymphocytic aggregates",4.8e-05,0.05,2e-06,0.000136
+"natural killer cell activity",4.7e-05,0.03,7e-06,6e-05
+"intra-pancreatic inoculation",4.2e-05,0.039,6e-06,5.1e-05
+"focal cell death",4.2e-05,0.041,6e-06,5.2e-05
+"intratumor microbiota",4.2e-05,0.042,6e-06,5.9e-05
+"cellular proliferation",3.4e-05,0.033,2e-06,4e-05
+"cell proliferation-inhibiting bystander effects",3.4e-05,0.029,2e-06,3.6e-05
+"human lung epithelial development",3.4e-05,0.046,6e-06,4.9e-05
+"metabolic dysfunction-associated steatohepatitis",3.4e-05,0.038,1e-06,5.7e-05
+"gastric adenocarcinoma tissues",3.2e-05,0.05,1e-06,7e-05
+"cancer formation",3.2e-05,0.049,1e-06,7.4e-05
+"tumor growth dynamics",3.2e-05,0.049,1e-06,7e-05
+"cancer burden",3.2e-05,0.05,1e-06,7e-05
+"cytokine-mediated cancer immunotherapy",3.1e-05,0.041,2e-06,3.5e-05
+"cardiac xenotransplantation",2.9e-05,0.03,5e-06,3.7e-05
+"melanoma metastases",2.7e-05,0.049,4e-06,9.2e-05
+"robust transduction",2.4e-05,0.035,4e-06,3.5e-05
+"myeloid cell infiltration",2.4e-05,0.049,2e-06,3.9e-05
+"irreversible cirrhosis",2.3e-05,0.046,2e-06,0.000126
+"systemic antitumor immunity",2.2e-05,0.021,6e-06,2.1e-05
+"leukemia/lymphoma conditions",2.2e-05,0.036,2e-06,4.3e-05
+"increased fibrosis",1.8e-05,0.035,0,2.9e-05
+"human immune function",1.7e-05,0.036,1e-06,8e-05
+"immune cell recruitment",1.4e-05,0.032,1e-06,1.6e-05
+"reduced terminal exhaustion",1.3e-05,0.01,0,8e-06
+"increased memory cell characteristics",1.3e-05,0.011,0,8e-06
+"extracellular matrix proteins",1.2e-05,0.045,1e-06,6.5e-05
+"adaptive anti-tumor immunity",1.1e-05,0.015,1e-06,1e-05
+"dense tumor infiltration",1e-05,0.01,0,6e-06
+"endogenous adaptive antitumour immunity",1e-05,0.009,0,1e-06
+"post-ablation immune therapy",9e-06,0.011,0,1e-06
+"cervical cancers",8e-06,0.05,1e-06,1.5e-05
+"chronic obstructive pulmonary disease",7e-06,0.042,0,2e-05
+"cystic fibrosis",7e-06,0.034,0,9e-06
+"cell-cycle progression",6e-06,0.015,0,3e-06
+"significant tumor growth inhibition",5e-06,0.032,0,5e-06
+"ovarian pathogenesis",4e-06,0.035,0,9e-06
+"myocardial necrosis",3e-06,0.047,0,4e-06
+"immuno-oncology targets",3e-06,0.027,0,3e-06
+"antibody function",3e-06,0.027,0,3e-06
+"spontaneous regression",3e-06,0.029,0,3e-06
+"autoimmune reactions",3e-06,0.031,0,3e-06
+"tumor-infiltrating immunosuppressive leukocytes",3e-06,0.031,0,3e-06
+"excessive immune response",3e-06,0.03,0,3e-06
+"mixed inflammation",3e-06,0.026,0,3e-06
+"lymphocyte activatory receptors",3e-06,0.034,0,3e-06
+"lysine-9 methyl-transferase",2e-06,0.029,0,2e-06
+"antitumor functions",2e-06,0.038,0,1.5e-05
+"host antitumor immunity",1e-06,0.041,0,1e-06
+"anti-tumor dysfunction",1e-06,0.044,0,2e-06
+"oncogenic viruses",0,0.037,0,0

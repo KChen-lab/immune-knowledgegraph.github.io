@@ -1,0 +1,65 @@
+"","term","Score","P.value","CI_Lower","CI_Upper"
+"anti-tumor efficacy","anti-tumor efficacy",0.002228,0.001,2.9e-05,0.000163
+"anti-tumour immune responses","anti-tumour immune responses",0.000568,0.002,1.4e-05,9.4e-05
+"tumor burden","tumor burden",0.018173,0.003,6e-05,0.000619
+"poorer prognosis","poorer prognosis",0.025061,0.004,8.5e-05,0.011427
+"pancreatic cancer growth","pancreatic cancer growth",0.004264,0.004,2.8e-05,0.000307
+"cross-present melanoma-derived tumor antigens","cross-present melanoma-derived tumor antigens",0.003206,0.005,4e-06,5e-05
+"important immune functions","important immune functions",0.002021,0.005,1e-06,3.3e-05
+"gastric cancer immunotherapy","gastric cancer immunotherapy",0.000282,0.005,2.2e-05,0.000194
+"gastric cancer peritoneal metastasis","gastric cancer peritoneal metastasis",0.012588,0.006,6.9e-05,0.008936
+"poor gastric cancer","poor gastric cancer",0.007083,0.006,2.7e-05,0.003315
+"fat-associated lymphoid structures","fat-associated lymphoid structures",0.000181,0.006,0,1.3e-05
+"complete tumour regression","complete tumour regression",0.000125,0.007,5e-06,7.2e-05
+"cancer progression","cancer progression",0.019184,0.008,0.000407,0.012391
+"cancer heterogeneity","cancer heterogeneity",0.000563,0.008,1.2e-05,0.000365
+"intra-pancreatic inoculation","intra-pancreatic inoculation",0.000275,0.008,5e-06,7e-05
+"focal cell death","focal cell death",0.000275,0.008,5e-06,7e-05
+"gastric cancer pathogenesis","gastric cancer pathogenesis",0.000647,0.01,1.9e-05,0.000405
+"intratumor microbiota","intratumor microbiota",0.000275,0.01,5e-06,7.2e-05
+"transplantable mouse tumor models","transplantable mouse tumor models",1.5e-05,0.01,0,3e-06
+"insulin resistance","insulin resistance",0.000878,0.013,7e-06,0.000325
+"leukemia-free survival","leukemia-free survival",0.003368,0.014,2.4e-05,0.001895
+"cellular bioenergetics","cellular bioenergetics",0.001241,0.014,1.6e-05,0.000742
+"cell cycle arrest","cell cycle arrest",0.000234,0.014,4e-06,6.7e-05
+"tumor escape","tumor escape",0.000621,0.017,3.9e-05,0.000488
+"checkpoint-based immunotherapy","checkpoint-based immunotherapy",1.3e-05,0.018,1e-06,7e-06
+"lineage-specific gene programs","lineage-specific gene programs",2e-05,0.02,1e-06,1.4e-05
+"high antitumor efficacy","high antitumor efficacy",2e-06,0.021,0,1e-06
+"interstitial lung disease","interstitial lung disease",0.001337,0.022,1.6e-05,0.000842
+"long-term tumor clearance","long-term tumor clearance",2e-06,0.023,0,1e-06
+"memory-like responses","memory-like responses",2.5e-05,0.025,1e-06,1.8e-05
+"cancer cell growth","cancer cell growth",0.00125,0.026,7.5e-05,0.001207
+"advanced gastric cancer","advanced gastric cancer",0.000112,0.028,1e-06,0.000163
+"peritoneal dissemination","peritoneal dissemination",5.6e-05,0.028,1e-06,8.2e-05
+"gastric cancer development","gastric cancer development",5.6e-05,0.028,1e-06,8.2e-05
+"immunoglobulin deficiency","immunoglobulin deficiency",1e-06,0.029,0,1e-06
+"effector cells","effector cells",0.011549,0.03,0.000793,0.013086
+"intestinal-type gastric carcinoma","intestinal-type gastric carcinoma",5.6e-05,0.03,1e-06,9e-05
+"monocyte activation","monocyte activation",6e-05,0.031,2e-06,6.4e-05
+"receptor function","receptor function",2.8e-05,0.032,0,5e-05
+"previously known tumor antigens","previously known tumor antigens",1.5e-05,0.032,2e-06,2.2e-05
+"anti-tumour immunity","anti-tumour immunity",0.000261,0.033,4.4e-05,0.000352
+"immune-based cancer therapies","immune-based cancer therapies",0.000115,0.033,2.2e-05,0.000155
+"marrow-residence genes","marrow-residence genes",2.7e-05,0.036,5e-06,3.8e-05
+"mild cytokine release syndrome","mild cytokine release syndrome",1.5e-05,0.036,1e-06,2.1e-05
+"cancer immunotherapy resistance","cancer immunotherapy resistance",2.1e-05,0.039,5e-06,3.4e-05
+"potent antitumor cytotoxicity","potent antitumor cytotoxicity",1.5e-05,0.04,2e-06,3.7e-05
+"cancer risk","cancer risk",0.000101,0.044,1.4e-05,0.000148
+"peripheral immune tolerance","peripheral immune tolerance",7e-06,0.044,0,9e-06
+"multiple immune checkpoints","multiple immune checkpoints",7e-06,0.044,0,9e-06
+"cancer microvessels","cancer microvessels",7e-06,0.045,0,9e-06
+"insulin sensitivity","insulin sensitivity",0.000751,0.046,2.9e-05,0.000951
+"cytokine/chemokine release","cytokine/chemokine release",0.000366,0.046,4.2e-05,0.000436
+"impaired antigen presentation","impaired antigen presentation",0.000157,0.046,1.8e-05,0.000235
+"defective negative selection","defective negative selection",5.2e-05,0.046,2e-05,9.8e-05
+"cytomegalovirus viremia","cytomegalovirus viremia",2e-05,0.046,1e-06,3.1e-05
+"cellular immune responses","cellular immune responses",0.000154,0.048,1.1e-05,0.000212
+"cell migration","cell migration",0.00077,0.049,0.000107,0.000996
+"autoimmune reconstitution","autoimmune reconstitution",5.9e-05,0.049,2.1e-05,0.000126
+"cell proliferation-inhibiting bystander effects","cell proliferation-inhibiting bystander effects",2.6e-05,0.05,2e-06,4.2e-05
+"co-mutated lung adenocarcinoma","co-mutated lung adenocarcinoma",7e-06,0.05,0,1.2e-05
+"obesity-induced chronic inflammation","obesity-induced chronic inflammation",5e-06,0.05,0,1e-05
+"obesity-induced immune dysregulation","obesity-induced immune dysregulation",5e-06,0.05,0,1e-05
+"obesity-induced immune responses","obesity-induced immune responses",5e-06,0.05,0,1e-05
+"mammary tumorigenesis","mammary tumorigenesis",3e-06,0.05,0,6e-06

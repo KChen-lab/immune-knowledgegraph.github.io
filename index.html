@@ -263,53 +263,6 @@
             text-decoration: underline;
         }
 
-        /* Examples tab styles */
-        .examples-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .example-card {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .example-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .example-description {
-            margin-bottom: 15px;
-            color: #555;
-            line-height: 1.5;
-        }
-        
-        .example-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .example-link {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        
-        .example-link:hover {
-            background-color: #0056b3;
-        }
-        
         .faq-section {
             padding: 20px;
             max-width: 800px;
@@ -582,8 +535,11 @@
         <div class="tabs">
             <button class="tab-button active" onclick="switchTab('home')">Home</button>
             <button class="tab-button" onclick="switchTab('tab1')">Gene Set Annotation</button>
-            <button class="tab-button" onclick="switchTab('Examples')">Examples</button>
-            <button class="tab-button" onclick="switchTab('tab2')">FAQ</button>
+            <button class="tab-button" onclick="switchTab('tab2')">Phenotype of Genes (Forward Genetics)</button>
+            <button class="tab-button" onclick="switchTab('tab3')">Gene Perturbation Effect (Reverse Genetics)</button>
+            <button class="tab-button" onclick="switchTab('tab4')">Perturbation Mechanism</button>
+	    <button class="tab-button" onclick="switchTab('tab5')">Examples</button>
+            <button class="tab-button" onclick="switchTab('tab6')">FAQ</button>
         </div>
 
         <!-- Home Tab -->
@@ -592,7 +548,9 @@
                 <h1 class="home-title">Immune Cell Knowledge Graph</h1>
                 
                 <p class="home-description">
-                    An interactive tool for immune cell type specific gene set annotations backed by >24K published studies 
+                    An interactive tool for examination of immune cell types, offering pathway analysis, gene set discovery, and 
+                    perturbation predictions in a cell type specific manner. All findings are backed by published literature with 
+                    interactive visualizations.
                 </p>
 
                 <div class="home-image">
@@ -601,13 +559,11 @@
 
                 <div class="publication">
                     <h3>Publication:</h3>
-                    <p class="title">Literature-scaled immunological gene set annotation using AI-powered immune cell knowledge graph (ICKG)</p>
-                    <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Matthew Gubin<sup>2</sup>, Qing Ye<sup>1</sup>, Hind Rafei<sup>3</sup>, Weiyi Peng<sup>4</sup>, Katayoun Rezvani<sup>2</sup>, Vakul Mohanty<sup>1</sup>*</p>, Ken Chen<sup>1</sup>*</p>
+                    <p class="title">AI-derived immune cell knowledge graphs to advance immunotherapy</p>
+                    <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Vakul Mohanty<sup>1</sup>, Hind Rafei<sup>2</sup>, Katayoun Rezvani<sup>2</sup>, Ken Chen<sup>1</sup>*</p>
                     <p class="affiliations">
                         <sup>1</sup> Department of Bioinformatics and Computational Biology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
-                        <sup>3</sup> Department of Immunology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
-                        <sup>3</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
-                        <sup>3</sup>Department of Biology and Biochemistry, The University of Houston, Houston, TX, USA
+                        <sup>2</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA
                     </p>
                 </div>
             </div>
@@ -675,6 +631,133 @@ PRF1
             </div>
             <div id="geneSetLoading" class="loading-indicator">Analyzing genes, please wait...</div>
             <div id="geneSetResults"></div>
+        </div>
+
+        <!-- Phenotype to Genes (Forward Genetics) Tab -->
+        <div id="tab2" class="tab-content">
+            <p class="home-description">
+                "Forward genetics is a molecular genetics approach of determining the genetic basis responsible for a phenotype"
+                <br><br>
+                Generate top 10 cell type-specific genes associated with your phenotype of interest. Enter a phenotype (e.g., "antigen-induced exhaustion") 
+                and select a cell type to discover genes and potential mechanism in which these genes contribute to that biological process, backed by literature evidence.
+                <br><br>
+                - Manuscript reference: "ICKGs hypothesize molecular mechanisms associated with immunophenotypes"
+            </p>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="phenotype">Enter phenotype:</label>
+                    <div class="phenotype-input-container">
+                        <input type="text" id="phenotype" placeholder="e.g., antigen-induced exhaustion">
+                        <button onclick="checkPhenotype()" class="check-button">Check</button>
+                    </div>
+                    <div id="matchStatus" class="match-status" style="display: none;">
+                        <!-- Match status will be shown here -->
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="genesetCellType">Cell Type:</label>
+                    <select id="genesetCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                        <option value="M">Macrophage</option>
+                    </select>
+                </div>
+
+                <button onclick="generateGeneset()">Generate Gene Set</button>
+            </div>
+            <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
+            <div id="genesetError" class="error-message"></div>
+            <div id="plotContainer"></div>
+            <div id="genesetResults"></div>
+        </div>
+
+        <!-- Gene Perturbation effect (Reverse Genetics) Tab -->
+        <div id="tab3" class="tab-content">
+            <p class="home-description">
+                "Reverse genetics is a method in molecular genetics that is used to help understand the function(s) of a gene by analysing the phenotypic effects 
+                caused by the alteration of the gene"
+                <br><br>
+                Output top 10 activated or inhibited genes/phenotypes by a gene of interest based on PageRank score. 
+                This analysis could potentially inform on the change in genetic and phenotypic landscape with the experimental perturbation of that gene. 
+                Input a gene of interest and cell type to analyze how it affect molecular or functional level in a corresponding cell type, based on statistical analysis of the knowledge graph.
+                <br><br>
+                - Manuscript reference: "ICKGs predict shift in transcriptomic profiles following experimental manipulations"
+            </p>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="perturbationGene">Gene:</label>
+                    <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
+                </div>
+
+                <div class="form-group">
+                    <label for="perturbCellType">Cell Type:</label>
+                    <select id="perturbCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                        <option value="M">Macrophage</option>
+                    </select>
+                </div>
+
+                <button onclick="predictPerturbation()">Analyze Perturbation</button>
+            </div>
+            <div id="perturbLoading" class="loading-indicator">Analyzing perturbation effects, please wait...</div>
+            <div id="perturbError" class="error-message"></div>
+            <div id="plotContainer"></div>
+            <div id="perturbResults"></div>
+            <div id="pathVisualizationContainer" style="margin-top: 30px; display: none;">
+                <h4>Path Visualization</h4>
+                <div id="pathPlot"></div>
+            </div>
+            <div class="popup-overlay" id="loadingPopup">
+                <div class="popup-content">
+                    <div class="loader"></div>
+                    <p>Querying subgraph...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perturbation Mechanism Tab -->
+        <div id="tab4" class="tab-content">
+            <p class="home-description">
+                Investigate the relationship among genes. Input a key gene of interests and some downstream gene of interests to visualize 
+                and understand the molecular pathways through which the key gene influences downstream genes.
+                <br><br>
+                - Manuscript reference: "ICKGs predict shift in transcriptomic profiles following experimental manipulations"
+            </p>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="mechanismGenes">Enter genes of interest (one per line):</label>
+                    <textarea id="mechanismGenes" placeholder="Example:
+NMMHCIIA
+PLCG2
+IGA
+..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="mechanismPerturbGene">Perturbation Gene:</label>
+                    <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
+                </div>
+
+                <div class="form-group">
+                    <label for="mechanismCellType">Cell Type:</label>
+                    <select id="mechanismCellType" required>
+                        <option value="NK">NK Cell</option>
+                        <option value="T">T Cell</option>
+                        <option value="B">B Cell</option>
+                        <option value="M">Macrophage</option>
+                    </select>
+                </div>
+
+                <button onclick="analyzeMechanism()">Analyze Mechanism</button>
+            </div>
+            <div id="mechanismLoading" class="loading-indicator">Analyzing mechanism, please wait...</div>
+            <div id="mechanismError" class="error-message"></div>
+            <div id="mechanismPlot"></div>
         </div>
 
         <!-- Examples Tab (New) -->
@@ -856,52 +939,6 @@ PRF1
             event.currentTarget.classList.add('active');
         }
 
-        function downloadResults() {
-            const results = document.getElementById('geneSetResults');
-            if (!results.innerHTML.trim()) {
-                alert('No results to download. Please analyze genes first.');
-                return;
-            }
-            
-            // Extract table data
-            const table = results.querySelector('table');
-            if (!table) {
-                alert('No table data found to download.');
-                return;
-            }
-            
-            // Convert table to CSV
-            let csv = [];
-            const rows = table.querySelectorAll('tr');
-            
-            rows.forEach(row => {
-                const rowData = [];
-                const cells = row.querySelectorAll('th, td');
-                cells.forEach(cell => {
-                    // Replace any commas in the cell text to avoid CSV issues
-                    rowData.push('"' + cell.textContent.replace(/"/g, '""') + '"');
-                });
-                csv.push(rowData.join(','));
-            });
-            
-            // Combine rows with newlines
-            const csvContent = csv.join('\n');
-            
-            // Create and trigger download
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const cellType = document.getElementById('cellType').value;
-            
-            // Create a URL for the blob
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `gene_set_analysis_${cellType}_${new Date().toISOString().slice(0,10)}.csv`);
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
         async function analyzeGenes() {
             const geneInput = document.getElementById('geneInput').value;
             const cellType = document.getElementById('cellType').value;
@@ -923,10 +960,6 @@ PRF1
             progressContainer.style.display = 'block';
             results.innerHTML = '';
             progressBar.style.width = '0%';
-            
-            // Disable download button while processing
-            document.getElementById('downloadButton').disabled = true;
-            document.getElementById('downloadButton').style.backgroundColor = '#6c757d';
             
             // Update progress steps
             updateProgressStep('validation');
@@ -963,7 +996,6 @@ PRF1
                 
                 if (data.error) {
                     results.innerHTML = `<div class="error-message">Error: ${data.error}</div>`;
-                    document.getElementById('downloadButton').disabled = true;
                 } else {
                     const table = `
                         <table>
@@ -988,15 +1020,10 @@ PRF1
                         </table>
                     `;
                     results.innerHTML = table;
-                    
-                    // Enable download button when results are available
-                    document.getElementById('downloadButton').disabled = false;
-                    document.getElementById('downloadButton').style.backgroundColor = '#007bff';
                 }
             } catch (error) {
                 results.innerHTML = `<div class="error-message">Error: Failed to connect to the server</div>`;
                 console.error('Analysis error:', error);
-                document.getElementById('downloadButton').disabled = true;
             } finally {
                 // Hide loading indicator after a brief delay
                 setTimeout(() => {

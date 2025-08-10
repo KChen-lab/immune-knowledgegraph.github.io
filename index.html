@@ -690,7 +690,6 @@ PRF1
                 Generate top 10 cell type-specific genes associated with your phenotype of interest. Enter a phenotype (e.g., "antigen-induced exhaustion") 
                 and select a cell type to discover genes and potential mechanism in which these genes contribute to that biological process, backed by literature evidence.
                 <br><br>
-                - Manuscript reference: "ICKGs hypothesize molecular mechanisms associated with immunophenotypes"
             </p>
             <div class="input-section">
                 <div class="form-group">
@@ -731,9 +730,9 @@ PRF1
                 <br><br>
                 Output top 10 activated or inhibited genes/phenotypes by a gene of interest based on PageRank score. 
                 This analysis could potentially inform on the change in genetic and phenotypic landscape with the experimental perturbation of that gene. 
-                Input a gene of interest and cell type to analyze how it affect molecular or functional level in a corresponding cell type, based on statistical analysis of the knowledge graph.
+                Input a gene of interest and cell type to analyze how it affect molecular or functional level in a corresponding cell type, based on statistical analysis of the knowledge graph,
+				and click on any of the affected terms to investigate underlying mechanism.
                 <br><br>
-                - Manuscript reference: "ICKGs predict shift in transcriptomic profiles following experimental manipulations"
             </p>
             <div class="input-section">
                 <div class="form-group">
@@ -775,7 +774,6 @@ PRF1
                 Investigate the relationship among genes. Input a key gene of interests and some downstream gene of interests to visualize 
                 and understand the molecular pathways through which the key gene influences downstream genes.
                 <br><br>
-                - Manuscript reference: "ICKGs predict shift in transcriptomic profiles following experimental manipulations"
             </p>
             <div class="input-section">
                 <div class="form-group">
@@ -940,6 +938,24 @@ IGA
 						        <li>Select the cell type of interest</li>
 						        <li>Click "Analyze Perturbation" to get the top 10 activated/inhibited genes by the perturbation.</li>
 						        <li>Click on any of the affected genes to query the subgraph connecting the perturbation with that gene.</li>
+						        <li>Hover your mouse over the edge to get the supporting PubMed abstract ID</li>
+						        <li>Click on the PubMed abstract ID link to go to the actual publication.</li>
+						    </ol>
+                        </div>
+                    </div>
+					
+                    <div class="faq-item mb-4">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            How do I use the Reverse Engineer feature?
+                            <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            To use the Perturbation Mechanism feature:
+						    <ol>
+						        <li>Enter genes of interest (one per line)</li>
+						        <li>Enter the perturbation (e.g. a gene name)</li>
+						        <li>Select the cell type of interest</li>
+						        <li>Click "Analyze Mechanism" to investigate how that perturbation is likely to influnece your genes of interest</li>
 						        <li>Hover your mouse over the edge to get the supporting PubMed abstract ID</li>
 						        <li>Click on the PubMed abstract ID link to go to the actual publication.</li>
 						    </ol>

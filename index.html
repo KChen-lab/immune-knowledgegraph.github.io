@@ -263,53 +263,6 @@
             text-decoration: underline;
         }
 
-        /* Examples tab styles */
-        .examples-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .example-card {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .example-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .example-description {
-            margin-bottom: 15px;
-            color: #555;
-            line-height: 1.5;
-        }
-        
-        .example-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .example-link {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        
-        .example-link:hover {
-            background-color: #0056b3;
-        }
-        
         .faq-section {
             padding: 20px;
             max-width: 800px;
@@ -582,11 +535,7 @@
         <div class="tabs">
             <button class="tab-button active" onclick="switchTab('home')">Home</button>
             <button class="tab-button" onclick="switchTab('tab1')">Gene Set Annotation</button>
-            <button class="tab-button" onclick="switchTab('tab2')">Phenotype of Genes (Forward Genetics)</button>
-            <button class="tab-button" onclick="switchTab('tab3')">Gene Perturbation Effect (Reverse Genetics)</button>
-            <button class="tab-button" onclick="switchTab('tab4')">Perturbation Mechanism</button>
-	    <button class="tab-button" onclick="switchTab('tab5')">Examples</button>
-            <button class="tab-button" onclick="switchTab('tab6')">FAQ</button>
+            <button class="tab-button" onclick="switchTab('tab2')">FAQ</button>
         </div>
 
         <!-- Home Tab -->
@@ -595,9 +544,7 @@
                 <h1 class="home-title">Immune Cell Knowledge Graph</h1>
                 
                 <p class="home-description">
-                    An interactive tool for examination of immune cell types, offering pathway analysis, gene set discovery, and 
-                    perturbation predictions in a cell type specific manner. All findings are backed by published literature with 
-                    interactive visualizations.
+                    An interactive tool for immune cell type specific gene set annotations backed by >24K published studies 
                 </p>
 
                 <div class="home-image">
@@ -606,13 +553,13 @@
 
                 <div class="publication">
                     <h3>Publication:</h3>
-                    <p class="title">AI-powered Immune Cell Knowledge Graph (ICKG) with granular immune contexts enables immune program interpretation</p>
-                    <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Qing Ye<sup>1</sup>, Matthew Gubin<sup>2</sup>, Merve Dede<sup>1</sup>, Hind Rafei<sup>3</sup>, Weiyi Peng<sup>4</sup>,Katayoun Rezvani<sup>3</sup>, Vakul Mohanty<sup>1</sup>*, Ken Chen<sup>1</sup>*</p>
+                    <p class="title">Literature-scaled immunological gene set annotation using AI-powered immune cell knowledge graph (ICKG)</p>
+                    <p class="authors">Authors: Shan He<sup>1</sup>, Yukun Tan<sup>1</sup>, Matthew Gubin<sup>2</sup>, Qing Ye<sup>1</sup>, Hind Rafei<sup>3</sup>, Weiyi Peng<sup>4</sup>, Katayoun Rezvani<sup>2</sup>, Vakul Mohanty<sup>1</sup>*</p>, Ken Chen<sup>1</sup>*</p>
                     <p class="affiliations">
                         <sup>1</sup> Department of Bioinformatics and Computational Biology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
-                        <sup>2</sup> Department of Immunology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA, USA<br>
-						<sup>3</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
-						<sup>4</sup> Department of Biology and Biochemistry, The University of Houston, Houston, Texas 77002, USA, USA
+                        <sup>3</sup> Department of Immunology, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
+                        <sup>3</sup> Department of Stem Cell Transplantation and Cellular Therapy, The University of Texas MD Anderson Cancer Center, Houston, Texas 77030, USA<br>
+                        <sup>3</sup>Department of Biology and Biochemistry, The University of Houston, Houston, TX, USA
                     </p>
                 </div>
             </div>
@@ -682,187 +629,7 @@ PRF1
             <div id="geneSetResults"></div>
         </div>
 
-        <!-- Phenotype to Genes (Forward Genetics) Tab -->
         <div id="tab2" class="tab-content">
-            <p class="home-description">
-                "Forward genetics is a molecular genetics approach of determining the genetic basis responsible for a phenotype"
-                <br><br>
-                Generate top 10 cell type-specific genes associated with your phenotype of interest. Enter a phenotype (e.g., "antigen-induced exhaustion") 
-                and select a cell type to discover genes and potential mechanism in which these genes contribute to that biological process, backed by literature evidence.
-                <br><br>
-            </p>
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="phenotype">Enter phenotype:</label>
-                    <div class="phenotype-input-container">
-                        <input type="text" id="phenotype" placeholder="e.g., antigen-induced exhaustion">
-                        <button onclick="checkPhenotype()" class="check-button">Check</button>
-                    </div>
-                    <div id="matchStatus" class="match-status" style="display: none;">
-                        <!-- Match status will be shown here -->
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="genesetCellType">Cell Type:</label>
-                    <select id="genesetCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                        <option value="M">Macrophage</option>
-                    </select>
-                </div>
-
-                <button onclick="generateGeneset()">Generate Gene Set</button>
-            </div>
-            <div id="genesetLoading" class="loading-indicator">Generating gene set, please wait...</div>
-            <div id="genesetError" class="error-message"></div>
-            <div id="plotContainer"></div>
-            <div id="genesetResults"></div>
-        </div>
-
-        <!-- Gene Perturbation effect (Reverse Genetics) Tab -->
-        <div id="tab3" class="tab-content">
-            <p class="home-description">
-                "Reverse genetics is a method in molecular genetics that is used to help understand the function(s) of a gene by analysing the phenotypic effects 
-                caused by the alteration of the gene"
-                <br><br>
-                Output top 10 activated or inhibited genes/phenotypes by a gene of interest based on PageRank score. 
-                This analysis could potentially inform on the change in genetic and phenotypic landscape with the experimental perturbation of that gene. 
-                Input a gene of interest and cell type to analyze how it affect molecular or functional level in a corresponding cell type, based on statistical analysis of the knowledge graph,
-				and click on any of the affected terms to investigate underlying mechanism.
-                <br><br>
-            </p>
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="perturbationGene">Gene:</label>
-                    <input type="text" id="perturbationGene" placeholder="e.g., IKZF2">
-                </div>
-
-                <div class="form-group">
-                    <label for="perturbCellType">Cell Type:</label>
-                    <select id="perturbCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                        <option value="M">Macrophage</option>
-                    </select>
-                </div>
-
-                <button onclick="predictPerturbation()">Analyze Perturbation</button>
-            </div>
-            <div id="perturbLoading" class="loading-indicator">Analyzing perturbation effects, please wait...</div>
-            <div id="perturbError" class="error-message"></div>
-            <div id="plotContainer"></div>
-            <div id="perturbResults"></div>
-            <div id="pathVisualizationContainer" style="margin-top: 30px; display: none;">
-                <h4>Path Visualization</h4>
-                <div id="pathPlot"></div>
-            </div>
-            <div class="popup-overlay" id="loadingPopup">
-                <div class="popup-content">
-                    <div class="loader"></div>
-                    <p>Querying subgraph...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Perturbation Mechanism Tab -->
-        <div id="tab4" class="tab-content">
-            <p class="home-description">
-                Investigate the relationship among genes. Input a key gene of interests and some downstream gene of interests to visualize 
-                and understand the molecular pathways through which the key gene influences downstream genes.
-                <br><br>
-            </p>
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="mechanismGenes">Enter genes of interest (one per line):</label>
-                    <textarea id="mechanismGenes" placeholder="Example:
-NMMHCIIA
-PLCG2
-IGA
-..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="mechanismPerturbGene">Perturbation Gene:</label>
-                    <input type="text" id="mechanismPerturbGene" placeholder="e.g., BLIMP1">
-                </div>
-
-                <div class="form-group">
-                    <label for="mechanismCellType">Cell Type:</label>
-                    <select id="mechanismCellType" required>
-                        <option value="NK">NK Cell</option>
-                        <option value="T">T Cell</option>
-                        <option value="B">B Cell</option>
-                        <option value="M">Macrophage</option>
-                    </select>
-                </div>
-
-                <button onclick="analyzeMechanism()">Analyze Mechanism</button>
-            </div>
-            <div id="mechanismLoading" class="loading-indicator">Analyzing mechanism, please wait...</div>
-            <div id="mechanismError" class="error-message"></div>
-            <div id="mechanismPlot"></div>
-        </div>
-
-        <!-- Examples Tab (New) -->
-        <div id="tab5" class="tab-content">
-            <div class="examples-container">
-                <h2>Example Results Comparison</h2>
-                <p class="tab-description">
-                    Compare the results of traditional Over-Representation Analysis (ORA) with our Immune Cell Knowledge Graph (ICKG) approach on several gene sets.
-                    Click on the links below to view detailed results for each example.
-                </p>
-        
-                <div class="example-card">
-                    <h3 class="example-title">CD4 Unassigned Gene Set</h3>
-                    <p class="example-description">
-                        This example shows the pathway analysis results for CD4 T cell unassigned gene set. ICKG results provide more cell type specific and literature-backed pathway associations compared to traditional ORA.
-                    </p>
-                    <div class="example-links">
-                        <a href="data/CD4_un1_ora.csv" class="example-link" target="_blank">ORA Results</a>
-                        <a href="data/CD4_un1.csv" class="example-link" target="_blank">ICKG Results</a>
-                    </div>
-                </div>
-        
-                <div class="example-card">
-                    <h3 class="example-title">CD4 Dysfunction Gene Set</h3>
-                    <p class="example-description">
-                        Analysis of genes associated with CD4 T cell dysfunction. The ICKG approach reveals functional relationships backed by literature evidence, highlighting immune checkpoint pathways and exhaustion markers.
-                    </p>
-                    <div class="example-links">
-                        <a href="data/CD4_dys_ora.csv" class="example-link" target="_blank">ORA Results</a>
-                        <a href="data/CD4_dys.csv" class="example-link" target="_blank">ICKG Results</a>
-                    </div>
-                </div>
-                
-                <div class="example-card">
-                    <h3 class="example-title">CD8 Unassigned Gene Set</h3>
-                    <p class="example-description">
-                        Pathway analysis for CD8 T cell unassigned gene set, demonstrating how ICKG can identify relevant biological pathways that may be missed by traditional ORA approaches.
-                    </p>
-                    <div class="example-links">
-                        <a href="data/CD8_un1_ora.csv" class="example-link" target="_blank">ORA Results</a>
-                        <a href="data/CD8_un1.csv" class="example-link" target="_blank">ICKG Results</a>
-                    </div>
-                </div>
-                
-                <div class="example-card">
-                    <h3 class="example-title">CD8 Chromatin Gene Set</h3>
-                    <p class="example-description">
-                        This example shows analysis of chromatin-associated genes in CD8 T cells. ICKG analysis reveals specific functional relationships related to epigenetic regulation and its impact on T cell function.
-                    </p>
-                    <div class="example-links">
-                        <a href="data/CD8_chromatin_ora.csv" class="example-link" target="_blank">ORA Results</a>
-                        <a href="data/CD8_chromatin.csv" class="example-link" target="_blank">ICKG Results</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="tab6" class="tab-content">
             <div class="faq-section">
                 <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
                 
@@ -885,12 +652,10 @@ IGA
                         </div>
                         <div class="faq-answer">
                             The tool currently supports four major immune cell types:
-							<ol>
-						        <li>NK Cells (Natural Killer Cells)</li>
-						        <li>T Cells</li>
-						        <li>B Cells</li>
-						        <li>Macrophages</li>
-						    </ol>
+                            - NK Cells (Natural Killer Cells)
+                            - T Cells
+                            - B Cells
+                            - Macrophages
                         </div>
                     </div>
         
@@ -901,66 +666,12 @@ IGA
                         </div>
                         <div class="faq-answer">
                             To use the Gene Set Annotation feature:
-							<ol>
-						        <li>Enter your genes of interest (one per line) in the text area</li>
-						        <li>Select the relevant cell type from the dropdown menu</li>
-						        <li>Click "Analyze" to see pathway relationships and statistical significance</li>
-						    </ol>
+                            1. Enter your genes of interest (one per line) in the text area
+                            2. Select the relevant cell type from the dropdown menu
+                            3. Click "Analyze" to see pathway relationships and statistical significance
+                            The tool will return pathway associations supported by published literature.
                         </div>
                     </div>
-
-                    <div class="faq-item mb-4">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            How do I use the Forward Engineer feature?
-                            <span class="faq-arrow">▼</span>
-                        </div>
-                        <div class="faq-answer">
-                            To use the Forward Engineer feature:
-							<ol>
-						        <li>Enter your phenotype of interest (could be a keyword or a phrase) in the text area</li>
-						        <li>Click "Check" to get the available nodes that resemble your phenotype of interest</li>
-						        <li>Select the relevant cell type from the dropdown menu</li>
-						        <li>Click "Generate Gene Set" to get the top 10 genes associated with your phenotype of interest.</li>
-						    </ol>
-                        </div>
-                    </div>
-
-                    <div class="faq-item mb-4">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            How do I use the Reverse Engineer feature?
-                            <span class="faq-arrow">▼</span>
-                        </div>
-                        <div class="faq-answer">
-                            To use the Reverse Engineer feature:
-						    <ol>
-						        <li>Enter your perturbation of interest (e.g. a gene name) in the text area</li>
-						        <li>Select the relevant cell type from the dropdown menu</li>
-						        <li>Click "Analyze Perturbation" to get the top 10 activated/inhibited genes by the perturbation.</li>
-						        <li>Click on any of the affected genes to query the subgraph connecting the perturbation with that gene.</li>
-						        <li>Hover your mouse over the edge to get the supporting PubMed abstract ID</li>
-						        <li>Click on the PubMed abstract ID link to go to the actual publication.</li>
-						    </ol>
-                        </div>
-                    </div>
-					
-                    <div class="faq-item mb-4">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            How do I use the Perturbation Mechanism feature?
-                            <span class="faq-arrow">▼</span>
-                        </div>
-                        <div class="faq-answer">
-                            To use the Perturbation Mechanism feature:
-						    <ol>
-						        <li>Enter genes of interest (one per line) in the text area</li>
-						        <li>Enter the perturbation (e.g. a gene name) in the text area</li>
-						        <li>Select the relevant cell type from the dropdown menu</li>
-						        <li>Click "Analyze Mechanism" to investigate how that perturbation is likely to influnece your genes of interest</li>
-						        <li>Hover your mouse over the edge to get the supporting PubMed abstract ID</li>
-						        <li>Click on the PubMed abstract ID link to go to the actual publication.</li>
-						    </ol>
-                        </div>
-                    </div>
-					
                 </div>
             </div>
         </div>
@@ -1088,7 +799,6 @@ IGA
             link.click();
             document.body.removeChild(link);
         }
-
         async function analyzeGenes() {
             const geneInput = document.getElementById('geneInput').value;
             const cellType = document.getElementById('cellType').value;
@@ -1110,6 +820,10 @@ IGA
             progressContainer.style.display = 'block';
             results.innerHTML = '';
             progressBar.style.width = '0%';
+            
+            // Disable download button while processing
+            document.getElementById('downloadButton').disabled = true;
+            document.getElementById('downloadButton').style.backgroundColor = '#6c757d';
             
             // Update progress steps
             updateProgressStep('validation');
@@ -1146,6 +860,7 @@ IGA
                 
                 if (data.error) {
                     results.innerHTML = `<div class="error-message">Error: ${data.error}</div>`;
+                    document.getElementById('downloadButton').disabled = true;
                 } else {
                     const table = `
                         <table>
@@ -1170,10 +885,15 @@ IGA
                         </table>
                     `;
                     results.innerHTML = table;
+                    
+                    // Enable download button when results are available
+                    document.getElementById('downloadButton').disabled = false;
+                    document.getElementById('downloadButton').style.backgroundColor = '#007bff';
                 }
             } catch (error) {
                 results.innerHTML = `<div class="error-message">Error: Failed to connect to the server</div>`;
                 console.error('Analysis error:', error);
+                document.getElementById('downloadButton').disabled = true;
             } finally {
                 // Hide loading indicator after a brief delay
                 setTimeout(() => {
